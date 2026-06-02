@@ -299,11 +299,13 @@ const questoes = [
   "Houve necessidade da contagem do estoque?",
   "O líder da produção tem domínio dos processos?",
   "O cardápio semanal está correto e disponível?",
-  "A equipe atende a demanda na unidade? Houve problemas?"
+  "A equipe está completa e atende a demanda na unidade? Houve problemas?",
+  "A gestora demonstra domínio da unidade, produção, equipe e clientes?",
+  "Como você foi recebido na unidade?"
 ];
 
 // ── FOTOS POR QUESTÃO ──
-let fotosQuestoes = new Array(12).fill(null);
+let fotosQuestoes = new Array(14).fill(null);
 
 function renderizarFotoQuestao(n) {
   const container = document.getElementById(`fotoq${n}`);
@@ -407,7 +409,7 @@ function salvarRascunho() {
       relatorio:  document.getElementById('relatorioText').value,
       questoes:   []
     };
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= 14; i++) {
       dados.questoes.push({
         resposta: (document.querySelector(`input[name="q${i}"]:checked`) || {}).value || '',
         obs:      (document.getElementById(`obs${i}`) || {}).value || ''
@@ -476,7 +478,7 @@ function restaurarRascunho() {
       const fotosqRaw = localStorage.getItem(RASCUNHO_KEY + '_fotosq');
       if (fotosqRaw) {
         fotosQuestoes = JSON.parse(fotosqRaw);
-        for (let n = 1; n <= 12; n++) renderizarFotoQuestao(n);
+        for (let n = 1; n <= 14; n++) renderizarFotoQuestao(n);
       }
     } catch(e) {}
     mostrarIndicador('📂 Rascunho restaurado — continue de onde parou!', true);
@@ -650,7 +652,7 @@ document.getElementById('visitaForm').addEventListener('submit', async function(
 
   // Coleta questões
   const questoesResp = [];
-  for (let i = 1; i <= 12; i++) {
+  for (let i = 1; i <= 14; i++) {
     const resp = (document.querySelector(`input[name="q${i}"]:checked`) || {}).value || '';
     const obs  = (document.getElementById(`obs${i}`) || {}).value || '';
     const foto = fotosQuestoes[i-1] || null;
@@ -711,16 +713,10 @@ function resetForm() {
   document.getElementById('visitaForm').reset();
   fotosCarregadas = [];
   renderizarFotos();
-  fotosQuestoes = new Array(12).fill(null);
-  for (let n = 1; n <= 12; n++) renderizarFotoQuestao(n);
+  fotosQuestoes = new Array(14).fill(null);
+  for (let n = 1; n <= 14; n++) renderizarFotoQuestao(n);
   document.getElementById('relatorioText').value = '';
   const hoje = new Date().toISOString().split('T')[0];
   document.getElementById('f_data_inicio').value = hoje;
   document.getElementById('f_data_fim').value = hoje;
-  document.getElementById('visitaForm').style.display = 'block';
-  document.getElementById('successScreen').style.display = 'none';
-  window.scrollTo(0, 0);
-}
-</script>
-</body>
-</html>
+  document.getElementById('visitaForm').style.disp
