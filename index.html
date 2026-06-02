@@ -1,134 +1,128 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatório de Visita – Apoio | NutriSaúde</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef4ee; color: #2d2d2d; padding: 16px; min-height: 100vh; }
-    .container { max-width: 820px; margin: 0 auto; background: #fff; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); overflow: hidden; }
-
-    /* ── HEADER ── */
-    .header { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 20px 28px; display: flex; align-items: center; gap: 16px; }
-    .header-logo { height: 56px; width: auto; filter: brightness(0) invert(1); flex-shrink: 0; }
-    .header-divider { width: 1px; height: 44px; background: rgba(255,255,255,0.3); flex-shrink: 0; }
-    .header-text h1 { font-size: 18px; font-weight: 700; letter-spacing: .3px; }
-    .header-text p { font-size: 12px; opacity: .80; margin-top: 3px; }
-
-    .form-body { padding: 28px 28px 36px; }
-    .required-note { font-size: 12px; color: #999; margin-bottom: 22px; }
-
-    /* ── SECTIONS ── */
-    .section { margin-bottom: 28px; }
-    .section-title { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #2e7d32; border-bottom: 2px solid #c8e6c9; padding-bottom: 6px; margin-bottom: 16px; }
-
-    /* ── GRID ── */
-    .grid-1 { display: grid; gap: 12px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: end; }
-    @media(max-width:600px) { .grid-2 { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: 1fr; } }
-
-    /* ── FIELDS ── */
-    .field { display: flex; flex-direction: column; gap: 5px; }
-    .field label { font-size: 11px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: #666; }
-    .date-sep { font-size: 13px; color: #aaa; padding-bottom: 12px; text-align: center; font-weight: 600; }
-    input[type="text"], input[type="date"], textarea, select {
-      padding: 10px 13px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px;
-      font-family: inherit; transition: border-color .2s; width: 100%; background: #fafafa;
-    }
-    input:focus, textarea:focus { outline: none; border-color: #43a047; box-shadow: 0 0 0 3px rgba(67,160,71,.12); background: #fff; }
-    .radio-group { display: flex; gap: 18px; align-items: center; padding: 8px 0; flex-wrap: wrap; }
-    .radio-label { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: #333; cursor: pointer; text-transform: none; }
-    .radio-label input[type="radio"] { width: 17px; height: 17px; accent-color: #2e7d32; }
-
-    /* ── QUESTÕES ── */
-    .questions-table { width: 100%; border-collapse: collapse; font-size: 14px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
-    .questions-table thead { background: #2e7d32; color: white; }
-    .questions-table th { padding: 11px 14px; font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
-    .questions-table th:first-child { text-align: left; }
-    .questions-table th:nth-child(2), .questions-table th:nth-child(3) { text-align: center; }
-    .questions-table tbody tr:nth-child(even) { background: #f1f8e9; }
-    .questions-table tbody tr:hover { background: #e8f5e9; }
-    .questions-table td { padding: 10px 14px; border-bottom: 1px solid #e8e8e8; vertical-align: middle; }
-    .q-cell { display: flex; align-items: center; gap: 9px; }
-    .q-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #2e7d32; color: white; border-radius: 50%; font-size: 11px; font-weight: 700; flex-shrink: 0; }
-    .sim-nao { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-    .sim-nao label { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; cursor: pointer; text-transform: none; color: #333; padding: 4px 9px; border: 1.5px solid #ccc; border-radius: 20px; transition: all .15s; }
-    .sim-nao label:has(input:checked) { border-color: #2e7d32; background: #e8f5e9; color: #1b5e20; }
-    .sim-nao input[type="radio"] { accent-color: #2e7d32; width: 13px; height: 13px; }
-    .obs-input { font-size: 13px; padding: 7px 10px; border-radius: 7px; border: 1.5px solid #e0e0e0; background: #fafafa; width: 100%; }
-    .obs-input:focus { border-color: #43a047; outline: none; }
-    @media(max-width:620px) {
-      .questions-table thead { display: none; }
-      .questions-table, .questions-table tbody, .questions-table tr, .questions-table td { display: block; width: 100%; }
-      .questions-table tr { border: 1.5px solid #ddd; border-radius: 10px; margin-bottom: 10px; padding: 12px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
-      .questions-table tr:nth-child(even) { background: #f9fbe7; }
-      .questions-table td { border: none; padding: 4px 0; }
-      .sim-nao { justify-content: flex-start; }
-    }
-
-    /* ── RELATORIO GERAL ── */
-    .audio-section { background: #f1f8e9; border: 2px solid #a5d6a7; border-radius: 12px; padding: 22px; margin-bottom: 28px; }
-    .audio-section h3 { color: #2e7d32; font-size: 16px; margin-bottom: 4px; }
-    .audio-section .subtitle { color: #666; font-size: 13px; margin-bottom: 16px; }
-    .mic-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
-    #micBtn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border: none; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; background: #2e7d32; color: white; box-shadow: 0 2px 8px rgba(46,125,50,.25); }
-    #micBtn:hover { background: #1b5e20; }
-    #micBtn.recording { background: #c62828; animation: pulsebtn 1.4s infinite; }
-    @keyframes pulsebtn { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
-    .rec-indicator { display: none; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: #c62828; }
-    .rec-dot { width: 10px; height: 10px; background: #c62828; border-radius: 50%; animation: pulsedot 1s infinite; }
-    @keyframes pulsedot { 0%,100% { opacity:1; } 50% { opacity:.3; } }
-    #interimBox { min-height: 20px; font-size: 13px; color: #888; font-style: italic; padding: 4px 0; margin-bottom: 8px; }
-    #relatorioText { min-height: 140px; resize: vertical; background: #fff; }
-    .mic-tip { font-size: 11px; color: #888; margin-top: 8px; }
-
-    /* ── FOTOS ── */
-    .foto-section { background: #fff8e1; border: 2px solid #ffe082; border-radius: 12px; padding: 22px; margin-bottom: 28px; }
-    .foto-section h3 { color: #f57f17; font-size: 16px; margin-bottom: 4px; }
-    .foto-section .subtitle { color: #666; font-size: 13px; margin-bottom: 16px; }
-    .foto-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
-    .foto-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border: none; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; color: white; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
-    .foto-btn-galeria { background: #f57f17; }
-    .foto-btn-galeria:hover { background: #e65100; }
-    .foto-btn-camera { background: #1565c0; }
-    .foto-btn-camera:hover { background: #0d47a1; }
-    .foto-upload-hint { font-size: 12px; color: #999; margin-top: 4px; text-align: center; }
-    .foto-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-    .foto-item { position: relative; width: 90px; height: 90px; border-radius: 8px; overflow: hidden; border: 2px solid #ffe082; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
-    .foto-item img { width: 100%; height: 100%; object-fit: cover; }
-    .foto-remove { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; background: rgba(0,0,0,.6); color: white; border: none; border-radius: 50%; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .foto-count { font-size: 12px; color: #888; margin-top: 8px; }
-
-    /* ── ENVIAR ── */
-    .submit-section { text-align: center; }
-    #btnSubmit { width: 100%; max-width: 420px; padding: 15px; background: linear-gradient(135deg, #2e7d32, #43a047); color: white; border: none; border-radius: 50px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity .2s; box-shadow: 0 4px 14px rgba(46,125,50,.30); }
-    #btnSubmit:hover { opacity: .9; }
-    #btnSubmit:disabled { opacity: .6; cursor: not-allowed; }
-    .send-note { font-size: 12px; color: #aaa; margin-top: 8px; }
-
-    /* ── SUCESSO ── */
-    #successScreen { display: none; text-align: center; padding: 50px 28px; }
-    #successScreen .big-check { font-size: 64px; margin-bottom: 14px; }
-    #successScreen h2 { color: #2e7d32; font-size: 24px; margin-bottom: 8px; }
-    #successScreen p { color: #666; font-size: 15px; margin-bottom: 24px; }
-    #btnNewReport { padding: 12px 32px; background: #2e7d32; color: white; border: none; border-radius: 50px; font-size: 15px; font-weight: 600; cursor: pointer; }
-
-    /* ── FOTO POR QUESTÃO ── */
-    .fotoq-cell { display:flex; align-items:center; justify-content:center; }
-    .fotoq-btn { background:none; border:1.5px dashed #a5d6a7; border-radius:8px; padding:6px 8px; cursor:pointer; font-size:18px; color:#2e7d32; transition:background .15s; }
-    .fotoq-btn:hover { background:#e8f5e9; }
-    .fotoq-thumb { position:relative; display:inline-block; }
-    .fotoq-thumb img { width:44px; height:44px; object-fit:cover; border-radius:6px; border:2px solid #a5d6a7; display:block; }
-    .fotoq-rm { position:absolute; top:-5px; right:-5px; width:16px; height:16px; background:#e53935; color:white; border:none; border-radius:50%; font-size:10px; cursor:pointer; line-height:16px; text-align:center; padding:0; }
-    @media(max-width:620px) { .fotoq-btn { padding:8px 12px; font-size:20px; } .fotoq-thumb img { width:54px; height:54px; } }
-
-    /* ── RASCUNHO ── */
-    #draftIndicator { font-size: 12px; color: #2e7d32; margin-top: 8px; opacity: 0; transition: opacity .4s; font-weight: 600; }
-    #btnLimparRascunho { background: none; border: none; font-size: 12px; color: #aaa; cursor: pointer; text-decoration: underline; margin-top: 4px; }
-    #btnLimparRascunho:hover { color: #e53935; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório de Visita – Apoio | NutriSaúde</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef4ee; color: #2d2d2d; padding: 16px; min-height: 100vh; }
+.container { max-width: 820px; margin: 0 auto; background: #fff; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); overflow: hidden; }
+/* ── HEADER ── */
+.header { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: white; padding: 20px 28px; display: flex; align-items: center; gap: 16px; }
+.header-logo { height: 56px; width: auto; filter: brightness(0) invert(1); flex-shrink: 0; }
+.header-divider { width: 1px; height: 44px; background: rgba(255,255,255,0.3); flex-shrink: 0; }
+.header-text h1 { font-size: 18px; font-weight: 700; letter-spacing: .3px; }
+.header-text p { font-size: 12px; opacity: .80; margin-top: 3px; }
+.form-body { padding: 28px 28px 36px; }
+.required-note { font-size: 12px; color: #999; margin-bottom: 22px; }
+/* ── SECTIONS ── */
+.section { margin-bottom: 28px; }
+.section-title { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #2e7d32; border-bottom: 2px solid #c8e6c9; padding-bottom: 6px; margin-bottom: 16px; }
+/* ── GRID ── */
+.grid-1 { display: grid; gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: end; }
+@media(max-width:600px) { .grid-2 { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: 1fr; } }
+/* ── FIELDS ── */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 11px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: #666; }
+.date-sep { font-size: 13px; color: #aaa; padding-bottom: 12px; text-align: center; font-weight: 600; }
+input[type="text"], input[type="date"], textarea, select {
+  padding: 10px 13px; border: 1.5px solid #ddd; border-radius: 8px; font-size: 14px;
+  font-family: inherit; transition: border-color .2s; width: 100%; background: #fafafa;
+}
+input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047; box-shadow: 0 0 0 3px rgba(67,160,71,.12); background: #fff; }
+.radio-group { display: flex; gap: 18px; align-items: center; padding: 8px 0; flex-wrap: wrap; }
+.radio-label { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: #333; cursor: pointer; text-transform: none; }
+.radio-label input[type="radio"] { width: 17px; height: 17px; accent-color: #2e7d32; }
+/* ── TURNO PILLS ── */
+.turno-group { display: flex; gap: 10px; padding: 6px 0; flex-wrap: wrap; }
+.turno-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer; padding: 8px 18px; border: 2px solid #ddd; border-radius: 50px; transition: all .18s; color: #555; background: #fafafa; }
+.turno-label:has(input:checked) { border-color: #2e7d32; background: #e8f5e9; color: #1b5e20; }
+.turno-label input[type="radio"] { display: none; }
+.turno-emoji { font-size: 16px; }
+/* ── QUESTÕES ── */
+.questions-table { width: 100%; border-collapse: collapse; font-size: 14px; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+.questions-table thead { background: #2e7d32; color: white; }
+.questions-table th { padding: 11px 14px; font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+.questions-table th:first-child { text-align: left; }
+.questions-table th:nth-child(2), .questions-table th:nth-child(3) { text-align: center; }
+.questions-table tbody tr:nth-child(even) { background: #f1f8e9; }
+.questions-table tbody tr:hover { background: #e8f5e9; }
+.questions-table td { padding: 10px 14px; border-bottom: 1px solid #e8e8e8; vertical-align: middle; }
+.q-cell { display: flex; align-items: center; gap: 9px; }
+.q-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #2e7d32; color: white; border-radius: 50%; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.sim-nao { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sim-nao label { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; cursor: pointer; text-transform: none; color: #333; padding: 4px 9px; border: 1.5px solid #ccc; border-radius: 20px; transition: all .15s; }
+.sim-nao label:has(input:checked) { border-color: #2e7d32; background: #e8f5e9; color: #1b5e20; }
+.sim-nao input[type="radio"] { accent-color: #2e7d32; width: 13px; height: 13px; }
+.obs-input { font-size: 13px; padding: 7px 10px; border-radius: 7px; border: 1.5px solid #e0e0e0; background: #fafafa; width: 100%; }
+.obs-input:focus { border-color: #43a047; outline: none; }
+@media(max-width:620px) {
+  .questions-table thead { display: none; }
+  .questions-table, .questions-table tbody, .questions-table tr, .questions-table td { display: block; width: 100%; }
+  .questions-table tr { border: 1.5px solid #ddd; border-radius: 10px; margin-bottom: 10px; padding: 12px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+  .questions-table tr:nth-child(even) { background: #f9fbe7; }
+  .questions-table td { border: none; padding: 4px 0; }
+  .sim-nao { justify-content: flex-start; }
+}
+/* ── RELATORIO GERAL ── */
+.audio-section { background: #f1f8e9; border: 2px solid #a5d6a7; border-radius: 12px; padding: 22px; margin-bottom: 28px; }
+.audio-section h3 { color: #2e7d32; font-size: 16px; margin-bottom: 4px; }
+.audio-section .subtitle { color: #666; font-size: 13px; margin-bottom: 16px; }
+.mic-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+#micBtn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border: none; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; background: #2e7d32; color: white; box-shadow: 0 2px 8px rgba(46,125,50,.25); }
+#micBtn:hover { background: #1b5e20; }
+#micBtn.recording { background: #c62828; animation: pulsebtn 1.4s infinite; }
+@keyframes pulsebtn { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+.rec-indicator { display: none; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: #c62828; }
+.rec-dot { width: 10px; height: 10px; background: #c62828; border-radius: 50%; animation: pulsedot 1s infinite; }
+@keyframes pulsedot { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+#interimBox { min-height: 20px; font-size: 13px; color: #888; font-style: italic; padding: 4px 0; margin-bottom: 8px; }
+#relatorioText { min-height: 140px; resize: vertical; background: #fff; }
+.mic-tip { font-size: 11px; color: #888; margin-top: 8px; }
+/* ── FOTOS ── */
+.foto-section { background: #fff8e1; border: 2px solid #ffe082; border-radius: 12px; padding: 22px; margin-bottom: 28px; }
+.foto-section h3 { color: #f57f17; font-size: 16px; margin-bottom: 4px; }
+.foto-section .subtitle { color: #666; font-size: 13px; margin-bottom: 16px; }
+.foto-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+.foto-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border: none; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s; color: white; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+.foto-btn-galeria { background: #f57f17; }
+.foto-btn-galeria:hover { background: #e65100; }
+.foto-btn-camera { background: #1565c0; }
+.foto-btn-camera:hover { background: #0d47a1; }
+.foto-upload-hint { font-size: 12px; color: #999; margin-top: 4px; text-align: center; }
+.foto-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.foto-item { position: relative; width: 90px; height: 90px; border-radius: 8px; overflow: hidden; border: 2px solid #ffe082; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+.foto-item img { width: 100%; height: 100%; object-fit: cover; }
+.foto-remove { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; background: rgba(0,0,0,.6); color: white; border: none; border-radius: 50%; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.foto-count { font-size: 12px; color: #888; margin-top: 8px; }
+/* ── ENVIAR ── */
+.submit-section { text-align: center; }
+#btnSubmit { width: 100%; max-width: 420px; padding: 15px; background: linear-gradient(135deg, #2e7d32, #43a047); color: white; border: none; border-radius: 50px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity .2s; box-shadow: 0 4px 14px rgba(46,125,50,.30); }
+#btnSubmit:hover { opacity: .9; }
+#btnSubmit:disabled { opacity: .6; cursor: not-allowed; }
+.send-note { font-size: 12px; color: #aaa; margin-top: 8px; }
+/* ── SUCESSO ── */
+#successScreen { display: none; text-align: center; padding: 50px 28px; }
+#successScreen .big-check { font-size: 64px; margin-bottom: 14px; }
+#successScreen h2 { color: #2e7d32; font-size: 24px; margin-bottom: 8px; }
+#successScreen p { color: #666; font-size: 15px; margin-bottom: 24px; }
+#btnNewReport { padding: 12px 32px; background: #2e7d32; color: white; border: none; border-radius: 50px; font-size: 15px; font-weight: 600; cursor: pointer; }
+/* ── FOTO POR QUESTÃO ── */
+.fotoq-cell { display:flex; align-items:center; justify-content:center; }
+.fotoq-btn { background:none; border:1.5px dashed #a5d6a7; border-radius:8px; padding:6px 8px; cursor:pointer; font-size:18px; color:#2e7d32; transition:background .15s; }
+.fotoq-btn:hover { background:#e8f5e9; }
+.fotoq-thumb { position:relative; display:inline-block; }
+.fotoq-thumb img { width:44px; height:44px; object-fit:cover; border-radius:6px; border:2px solid #a5d6a7; display:block; }
+.fotoq-rm { position:absolute; top:-5px; right:-5px; width:16px; height:16px; background:#e53935; color:white; border:none; border-radius:50%; font-size:10px; cursor:pointer; line-height:16px; text-align:center; padding:0; }
+@media(max-width:620px) { .fotoq-btn { padding:8px 12px; font-size:20px; } .fotoq-thumb img { width:54px; height:54px; } }
+/* ── RASCUNHO ── */
+#draftIndicator { font-size: 12px; color: #2e7d32; margin-top: 8px; opacity: 0; transition: opacity .4s; font-weight: 600; }
+#btnLimparRascunho { background: none; border: none; font-size: 12px; color: #aaa; cursor: pointer; text-decoration: underline; margin-top: 4px; }
+#btnLimparRascunho:hover { color: #e53935; }
+</style>
 </head>
 <body>
 <div class="container">
@@ -136,7 +130,7 @@
   <!-- HEADER -->
   <div class="header">
     <img class="header-logo" src="logo.png" alt="NutriSaúde"
-         onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">
+      onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">
     <div id="logoFallback" style="display:none;width:52px;height:52px;background:rgba(255,255,255,0.2);border-radius:50%;align-items:center;justify-content:center;font-size:24px;font-weight:900;flex-shrink:0;">N</div>
     <div class="header-divider"></div>
     <div class="header-text">
@@ -172,6 +166,25 @@
           <div class="field">
             <label>Data fim *</label>
             <input type="date" id="f_data_fim" required>
+          </div>
+        </div>
+
+        <!-- TURNO -->
+        <div class="field" style="margin-top:12px">
+          <label>Turno *</label>
+          <div class="turno-group">
+            <label class="turno-label">
+              <input type="radio" name="turno" value="Almoço" required>
+              <span class="turno-emoji">☀️</span> Almoço
+            </label>
+            <label class="turno-label">
+              <input type="radio" name="turno" value="Jantar">
+              <span class="turno-emoji">🌙</span> Jantar
+            </label>
+            <label class="turno-label">
+              <input type="radio" name="turno" value="Ceia">
+              <span class="turno-emoji">🌃</span> Ceia
+            </label>
           </div>
         </div>
 
@@ -243,11 +256,8 @@
       <div class="foto-section">
         <h3>📸 Evidências Fotográficas</h3>
         <p class="subtitle">Adicione fotos da galeria ou tire uma foto na hora. Máximo 8 fotos.</p>
-
-        <!-- Inputs ocultos -->
         <input type="file" id="fotoGaleriaInput" accept="image/*" multiple style="display:none">
-        <input type="file" id="fotoCameraInput"  accept="image/*" capture="environment" style="display:none">
-
+        <input type="file" id="fotoCameraInput" accept="image/*" capture="environment" style="display:none">
         <div class="foto-btns">
           <button type="button" class="foto-btn foto-btn-galeria" onclick="document.getElementById('fotoGaleriaInput').click()">
             📁 Da Galeria
@@ -257,7 +267,6 @@
           </button>
         </div>
         <p class="foto-upload-hint">As fotos serão incluídas diretamente no PDF do relatório</p>
-
         <div class="foto-preview" id="fotoPreview"></div>
         <p class="foto-count" id="fotoCount"></p>
       </div>
@@ -269,6 +278,7 @@
         <div id="draftIndicator">💾 Rascunho salvo</div>
         <button type="button" id="btnLimparRascunho" onclick="confirmarLimparRascunho()">🗑 Limpar rascunho</button>
       </div>
+
     </form>
 
     <!-- TELA DE SUCESSO -->
@@ -278,6 +288,7 @@
       <p>O relatório foi enviado com sucesso para<br><strong>paloma.miranda@nutrisaude.com.br</strong></p>
       <button id="btnNewReport" onclick="resetForm()">📋 Novo Relatório</button>
     </div>
+
   </div>
 </div>
 
@@ -398,25 +409,25 @@ const RASCUNHO_KEY = 'nutrisaude_rascunho';
 function salvarRascunho() {
   try {
     const dados = {
-      unidade:    document.getElementById('f_unidade').value,
+      unidade: document.getElementById('f_unidade').value,
       dataInicio: document.getElementById('f_data_inicio').value,
-      dataFim:    document.getElementById('f_data_fim').value,
-      motivo:     document.getElementById('f_motivo').value,
-      tipo:       (document.querySelector('input[name="tipo"]:checked') || {}).value || '',
-      apoio:      document.getElementById('f_apoio').value,
-      gestora:    document.getElementById('f_gestora').value,
+      dataFim: document.getElementById('f_data_fim').value,
+      turno: (document.querySelector('input[name="turno"]:checked') || {}).value || '',
+      motivo: document.getElementById('f_motivo').value,
+      tipo: (document.querySelector('input[name="tipo"]:checked') || {}).value || '',
+      apoio: document.getElementById('f_apoio').value,
+      gestora: document.getElementById('f_gestora').value,
       supervisao: document.getElementById('f_supervisao').value,
-      relatorio:  document.getElementById('relatorioText').value,
-      questoes:   []
+      relatorio: document.getElementById('relatorioText').value,
+      questoes: []
     };
     for (let i = 1; i <= 14; i++) {
       dados.questoes.push({
         resposta: (document.querySelector(`input[name="q${i}"]:checked`) || {}).value || '',
-        obs:      (document.getElementById(`obs${i}`) || {}).value || ''
+        obs: (document.getElementById(`obs${i}`) || {}).value || ''
       });
     }
     localStorage.setItem(RASCUNHO_KEY, JSON.stringify(dados));
-    // Salvar fotos gerais e fotos das questões (podem ser grandes)
     try {
       localStorage.setItem(RASCUNHO_KEY + '_fotos', JSON.stringify(fotosCarregadas));
     } catch(quota) {
@@ -449,17 +460,17 @@ function restaurarRascunho() {
     const raw = localStorage.getItem(RASCUNHO_KEY);
     if (!raw) return;
     const d = JSON.parse(raw);
-    // Só restaura se tiver algum dado significativo
     if (!d.unidade && !d.apoio && !d.relatorio) return;
-    if (d.unidade)    document.getElementById('f_unidade').value     = d.unidade;
+    if (d.unidade) document.getElementById('f_unidade').value = d.unidade;
     if (d.dataInicio) document.getElementById('f_data_inicio').value = d.dataInicio;
-    if (d.dataFim)    document.getElementById('f_data_fim').value    = d.dataFim;
-    if (d.motivo)     document.getElementById('f_motivo').value      = d.motivo;
+    if (d.dataFim) document.getElementById('f_data_fim').value = d.dataFim;
+    if (d.turno) { const r = document.querySelector(`input[name="turno"][value="${d.turno}"]`); if (r) r.checked = true; }
+    if (d.motivo) document.getElementById('f_motivo').value = d.motivo;
     if (d.tipo) { const r = document.querySelector(`input[name="tipo"][value="${d.tipo}"]`); if (r) r.checked = true; }
-    if (d.apoio)      document.getElementById('f_apoio').value       = d.apoio;
-    if (d.gestora)    document.getElementById('f_gestora').value     = d.gestora;
-    if (d.supervisao) document.getElementById('f_supervisao').value  = d.supervisao;
-    if (d.relatorio)  document.getElementById('relatorioText').value = d.relatorio;
+    if (d.apoio) document.getElementById('f_apoio').value = d.apoio;
+    if (d.gestora) document.getElementById('f_gestora').value = d.gestora;
+    if (d.supervisao) document.getElementById('f_supervisao').value = d.supervisao;
+    if (d.relatorio) document.getElementById('relatorioText').value = d.relatorio;
     if (d.questoes) {
       d.questoes.forEach((q, i) => {
         const n = i + 1;
@@ -468,12 +479,10 @@ function restaurarRascunho() {
         if (obs && q.obs) obs.value = q.obs;
       });
     }
-    // Restaurar fotos gerais
     try {
       const fotosRaw = localStorage.getItem(RASCUNHO_KEY + '_fotos');
       if (fotosRaw) { fotosCarregadas = JSON.parse(fotosRaw); renderizarFotos(); }
     } catch(e) {}
-    // Restaurar fotos das questões
     try {
       const fotosqRaw = localStorage.getItem(RASCUNHO_KEY + '_fotosq');
       if (fotosqRaw) {
@@ -508,7 +517,7 @@ function confirmarLimparRascunho() {
 
 // Auto-salvar 1 segundo após qualquer mudança no formulário
 let _saveTimeout;
-document.getElementById('visitaForm').addEventListener('input',  () => { clearTimeout(_saveTimeout); _saveTimeout = setTimeout(salvarRascunho, 1000); });
+document.getElementById('visitaForm').addEventListener('input', () => { clearTimeout(_saveTimeout); _saveTimeout = setTimeout(salvarRascunho, 1000); });
 document.getElementById('visitaForm').addEventListener('change', () => { clearTimeout(_saveTimeout); _saveTimeout = setTimeout(salvarRascunho, 1000); });
 
 // ── FOTOS ──
@@ -581,7 +590,6 @@ restaurarRascunho();
 // ── GRAVAÇÃO DE VOZ ──
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null, isRecording = false;
-
 if (!SR) {
   document.getElementById('micBtn').style.display = 'none';
 } else {
@@ -629,50 +637,43 @@ function stopRecording() {
   document.getElementById('interimBox').textContent = '';
 }
 
-// ── HELPER: formatar data pt-BR ──
-function formatarData(val) {
-  if (!val) return '';
-  const [y, m, d] = val.split('-');
-  return `${d}/${m}/${y}`;
-}
-
 // ── ENVIO ──
 document.getElementById('visitaForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  // Coleta identificação
-  const unidade    = document.getElementById('f_unidade').value.trim();
+  const unidade = document.getElementById('f_unidade').value.trim();
   const dataInicio = document.getElementById('f_data_inicio').value;
-  const dataFim    = document.getElementById('f_data_fim').value;
-  const motivo     = document.getElementById('f_motivo').value.trim();
-  const tipo       = (document.querySelector('input[name="tipo"]:checked') || {}).value || '';
-  const apoio      = document.getElementById('f_apoio').value.trim();
-  const gestora    = document.getElementById('f_gestora').value.trim();
+  const dataFim = document.getElementById('f_data_fim').value;
+  const turno = (document.querySelector('input[name="turno"]:checked') || {}).value || '';
+  const motivo = document.getElementById('f_motivo').value.trim();
+  const tipo = (document.querySelector('input[name="tipo"]:checked') || {}).value || '';
+  const apoio = document.getElementById('f_apoio').value.trim();
+  const gestora = document.getElementById('f_gestora').value.trim();
   const supervisao = document.getElementById('f_supervisao').value.trim();
 
-  // Coleta questões
   const questoesResp = [];
   for (let i = 1; i <= 14; i++) {
     const resp = (document.querySelector(`input[name="q${i}"]:checked`) || {}).value || '';
-    const obs  = (document.getElementById(`obs${i}`) || {}).value || '';
+    const obs = (document.getElementById(`obs${i}`) || {}).value || '';
     const foto = fotosQuestoes[i-1] || null;
     questoesResp.push({ resposta: resp, observacao: obs, foto });
   }
 
   const relatorio = document.getElementById('relatorioText').value.trim();
 
-  // Validação básica
   if (!unidade || !apoio) {
     alert('Preencha os campos obrigatórios: Unidade e Apoio.');
     return;
   }
+  if (!turno) {
+    alert('Selecione o turno da visita (Almoço, Jantar ou Ceia).');
+    return;
+  }
 
-  // Bloqueia botão
   const btn = document.getElementById('btnSubmit');
   btn.disabled = true;
   btn.textContent = '⏳ Enviando…';
 
-  // Formata datas para o padrão brasileiro (DD/MM/AAAA)
   function fmtBR(d) {
     if (!d) return '';
     const [y, m, dia] = d.split('-');
@@ -683,6 +684,7 @@ document.getElementById('visitaForm').addEventListener('submit', async function(
     unidade,
     data_inicio_br: fmtBR(dataInicio),
     data_fim_br: fmtBR(dataFim),
+    turno,
     motivo, tipo, apoio, gestora, supervisao,
     questoes: questoesResp,
     relatorio,
@@ -696,7 +698,6 @@ document.getElementById('visitaForm').addEventListener('submit', async function(
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     });
-    // Exibe tela de sucesso e apaga rascunho
     limparRascunho();
     document.getElementById('visitaForm').style.display = 'none';
     document.getElementById('successScreen').style.display = 'flex';
