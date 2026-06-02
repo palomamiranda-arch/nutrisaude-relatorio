@@ -387,14 +387,21 @@
           <div class="error-msg" id="err-nome">Campo obrigatório</div>
         </div>
 
+        <div class="field">
+          <label>Unidade <span class="req">*</span></label>
+          <input type="text" id="unidade" readonly />
+        </div>
+
         <div class="field-row">
           <div class="field">
-            <label>Unidade <span class="req">*</span></label>
-            <input type="text" id="unidade" readonly />
+            <label>Data de início <span class="req">*</span></label>
+            <input type="date" id="dataInicio" />
+            <div class="error-msg" id="err-dataInicio">Campo obrigatório</div>
           </div>
           <div class="field">
-            <label>Data da visita <span class="req">*</span></label>
-            <input type="date" id="dataVisita" readonly />
+            <label>Data de fim <span class="req">*</span></label>
+            <input type="date" id="dataFim" />
+            <div class="error-msg" id="err-dataFim">Campo obrigatório</div>
           </div>
         </div>
 
@@ -458,20 +465,6 @@
         </div>
 
         <div class="field">
-          <label>Teria algum apoio que não gostaria de receber na sua unidade?</label>
-          <div class="yesno-group">
-            <input type="radio" name="naoReceberApoio" id="nrSim" value="Sim">
-            <label for="nrSim">Sim</label>
-            <input type="radio" name="naoReceberApoio" id="nrNao" value="Não">
-            <label for="nrNao">Não</label>
-          </div>
-
-          <div class="conditional" id="motivoCondicional">
-            <textarea id="motivoNaoReceber" placeholder="Qual apoio e qual o motivo?"></textarea>
-          </div>
-        </div>
-
-        <div class="field">
           <label>Gostaria de deixar mais alguma observação?</label>
           <textarea id="observacoes" placeholder="Observações adicionais..."></textarea>
         </div>
@@ -502,21 +495,21 @@
     if (el) el.value = val;
   }
 
-  setField('unidade',    'unidade');
-  setField('apoio',      'apoio');
+  setField('unidade', 'unidade');
+  setField('apoio',   'apoio');
 
-  // Date param: expects YYYY-MM-DD
+  // Pre-fill start date from URL param
   const dataParam = params.get('data');
   if (dataParam) {
-    document.getElementById('dataVisita').value = dataParam;
+    document.getElementById('dataInicio').value = dataParam;
+    document.getElementById('dataFim').value = dataParam;
   }
 
-  // Conditional: show "motivo" field when "Sim" is selected
-  document.querySelectorAll('input[name="naoReceberApoio"]').forEach(r => {
-    r.addEventListener('change', () => {
-      const cond = document.getElementById('motivoCondicional');
-      cond.classList.toggle('visible', r.value === 'Sim' && r.checked);
-    });
+  // Auto-adjust: dataFim must be >= dataInicio
+  document.getElementById('dataInicio').addEventListener('change', function() {
+    const fim = document.getElementById('dataFim');
+    if (fim.value && fim.value < this.value) fim.value = this.value;
+    fim.min = this.value;
   });
 
   // ── VALIDATION & SUBMIT ─────────────────────────────────────────────────
@@ -541,6 +534,12 @@
     const nome = document.getElementById('nomeCompleto').value.trim();
     validate('nomeCompleto', 'err-nome', nome.length > 0);
 
+    const dataInicio = document.getElementById('dataInicio').value;
+    validate('dataInicio', 'err-dataInicio', dataInicio.length > 0);
+
+    const dataFim = document.getElementById('dataFim').value;
+    validate('dataFim', 'err-dataFim', dataFim.length > 0);
+
     const nota = document.querySelector('input[name="nota"]:checked');
     const notaErr = document.getElementById('err-nota');
     if (!nota) { notaErr.style.display = 'block'; valid = false; }
@@ -564,17 +563,16 @@
     btn.textContent = 'Enviando...';
 
     const payload = {
-      nome:             nome,
-      unidade:          document.getElementById('unidade').value,
-      dataVisita:       document.getElementById('dataVisita').value,
-      apoio:            document.getElementById('apoio').value,
-      nota:             nota ? nota.value : '',
-      avaliacao:        avaliacao,
-      bemAtendido:      bemAtendido ? bemAtendido.value : '',
-      sugestoes:        document.getElementById('sugestoes').value.trim(),
-      naoReceberApoio:  (document.querySelector('input[name="naoReceberApoio"]:checked') || {}).value || '',
-      motivoNaoReceber: document.getElementById('motivoNaoReceber').value.trim(),
-      observacoes:      document.getElementById('observacoes').value.trim(),
+      nome:        nome,
+      unidade:     document.getElementById('unidade').value,
+      dataInicio:  dataInicio,
+      dataFim:     dataFim,
+      apoio:       document.getElementById('apoio').value,
+      nota:        nota ? nota.value : '',
+      avaliacao:   avaliacao,
+      bemAtendido: bemAtendido ? bemAtendido.value : '',
+      sugestoes:   document.getElementById('sugestoes').value.trim(),
+      observacoes: document.getElementById('observacoes').value.trim(),
     };
 
     try {
