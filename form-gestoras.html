@@ -387,9 +387,9 @@
           <div class="error-msg" id="err-nome">Campo obrigatório</div>
         </div>
 
-        <div class="field">
+        <div class="field" id="field-unidade">
           <label>Unidade <span class="req">*</span></label>
-          <input type="text" id="unidade" readonly />
+          <!-- preenchido via JS: texto (readonly) se vier pelo link, select se acesso direto -->
         </div>
 
         <div class="field-row">
@@ -405,9 +405,9 @@
           </div>
         </div>
 
-        <div class="field">
+        <div class="field" id="field-apoio">
           <label>Apoio que visitou a unidade <span class="req">*</span></label>
-          <input type="text" id="apoio" readonly />
+          <!-- preenchido via JS -->
         </div>
       </div>
 
@@ -486,26 +486,62 @@
   const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbw_OiZEUIymwzP7t76tRp6zXkVrQttSzukpyiU62wP7NAqyG2AZliiiuSHQAb5zoE20/exec';
   // ────────────────────────────────────────────────────────────────────────
 
-  // Pre-fill from URL params
-  const params = new URLSearchParams(window.location.search);
+  const UNIDADES = [
+    'Alles','Ambiental','ASB Águas Sta Barbara','ASB Campos','ASB Perus',
+    'Bbosch','Biatex','Bresco','BTG 1','BTG VIII',
+    'Cainco','Cetro','CHS','Dori Filial','Dori Matriz','Dori Rolândia',
+    'Dongwon','Ebara','Ebara Thebe','Flash Cover','GLP','GLP VIII',
+    'Haribo','Hospital Araraquara','Hospital Unimed Limeira','Hospital Unimed Rio Verde',
+    'Hospital Versânia','Hosp. Bene','HS Telecom','Hwashin','Ikatec','Injex',
+    'Innovapack','Jazam','Jornal Cruzeiro do Sul','Kimberlit','Kimetais',
+    'Laponia','Latam','Loyder','Marilia','Maringa','Marvi','Matriz',
+    'Mectrol','Merieux Ambiental','Merieux Laboratorios','Metaltork',
+    'Metax Campinas','Metax Ribeirão','Metax SP','Minalba Belém',
+    'Mirassol Guarulhos','Mirassol Jundiaí','NGB Aracaju','NGB Araucária',
+    'NGB Bauru','NGB Belém','NGB Canoas I','NGB Canoas II','NGB Itajaí',
+    'NGB Ipojuca','NGB Juazeiro','NGB Macaé I','NGB Macaé II','NGB Mauá I',
+    'NGB Mauá II','NGB Paulínia','NGB São Francisco','NGB São Luís',
+    'NGB Senador Canedo','Nipro','Noroeste','Pequeno Mundo','Plastrela',
+    'Polimaquinas','Preferida','Reckitt','Refrix','Reval','SH',
+    'São Carlos','São Carlos 2','Sasazaki','SH','Spiltag','Stalo',
+    'Tiliform','Tudor','Unimed Bauru','Unimed Campo Grande','Unimed Ribeirão',
+    'Vannucci','Vaxxinova','Maternidade Campinas','Hospital Unimed São Carlos',
+    'Clinica Campo Grande','Biomecanica'
+  ].sort();
 
-  function setField(id, param) {
-    const el = document.getElementById(id);
-    const val = params.get(param) || '';
-    if (el) el.value = val;
+  const APOIOS = [
+    'Andreia','Cleber','Fabiana','Fabio','Francine',
+    'Gabriela','Gisele','Julia','Letícia','Levi',
+    'Paloma','Ricardo'
+  ].sort();
+
+  const params = new URLSearchParams(window.location.search);
+  const paramUnidade = params.get('unidade') || '';
+  const paramApoio   = params.get('apoio')   || '';
+  const dataParam    = params.get('data')    || '';
+
+  // Monta campo Unidade
+  const fieldUnidade = document.getElementById('field-unidade');
+  if (paramUnidade) {
+    fieldUnidade.innerHTML += `<input type="text" id="unidade" value="${paramUnidade}" readonly />`;
+  } else {
+    fieldUnidade.innerHTML += `<select id="unidade"><option value="">Selecione a unidade...</option>${UNIDADES.map(u=>`<option value="${u}">${u}</option>`).join('')}</select><div class="error-msg" id="err-unidade">Campo obrigatório</div>`;
   }
 
-  setField('unidade', 'unidade');
-  setField('apoio',   'apoio');
+  // Monta campo Apoio
+  const fieldApoio = document.getElementById('field-apoio');
+  if (paramApoio) {
+    fieldApoio.innerHTML += `<input type="text" id="apoio" value="${paramApoio}" readonly />`;
+  } else {
+    fieldApoio.innerHTML += `<select id="apoio"><option value="">Selecione o apoio...</option>${APOIOS.map(a=>`<option value="${a}">${a}</option>`).join('')}</select><div class="error-msg" id="err-apoio">Campo obrigatório</div>`;
+  }
 
-  // Pre-fill start date from URL param
-  const dataParam = params.get('data');
+  // Datas
   if (dataParam) {
     document.getElementById('dataInicio').value = dataParam;
     document.getElementById('dataFim').value = dataParam;
   }
 
-  // Auto-adjust: dataFim must be >= dataInicio
   document.getElementById('dataInicio').addEventListener('change', function() {
     const fim = document.getElementById('dataFim');
     if (fim.value && fim.value < this.value) fim.value = this.value;
@@ -533,6 +569,12 @@
 
     const nome = document.getElementById('nomeCompleto').value.trim();
     validate('nomeCompleto', 'err-nome', nome.length > 0);
+
+    const unidadeVal = document.getElementById('unidade').value.trim();
+    if (!paramUnidade) validate('unidade', 'err-unidade', unidadeVal.length > 0);
+
+    const apoioVal = document.getElementById('apoio').value.trim();
+    if (!paramApoio) validate('apoio', 'err-apoio', apoioVal.length > 0);
 
     const dataInicio = document.getElementById('dataInicio').value;
     validate('dataInicio', 'err-dataInicio', dataInicio.length > 0);
