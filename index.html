@@ -132,6 +132,24 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047
 .nota-display { margin-top: 12px; font-size: 13px; color: #666; font-weight: 600; min-height: 20px; }
 /* ── RASCUNHO ── */
 #draftIndicator { font-size: 12px; color: #2e7d32; margin-top: 8px; opacity: 0; transition: opacity .4s; font-weight: 600; }
+  fetch('https://script.google.com/a/macros/nutrisaude.com.br/s/AKfycbz2yAA4pxCCFQ-Vrp0D_f8HiTQAYtwZUi8nio-J5bvsjqGIUbF0iWicgOFk-HdHwfbg/exec', {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tipo: 'apoios',
+        unidade: payload.unidade,
+        data_inicio_br: payload.data_inicio_br,
+        data_fim_br: payload.data_fim_br,
+        turno: payload.turno,
+        apoio: payload.apoio,
+        gestora: payload.gestora,
+        supervisao: payload.supervisao,
+        nota: payload.nota,
+        motivo: payload.motivo,
+        tipo_visita: payload.tipo,
+        relatorio: payload.relatorio
+      })
+    }).catch(function(){});
 #btnLimparRascunho { background: none; border: none; font-size: 12px; color: #aaa; cursor: pointer; text-decoration: underline; margin-top: 4px; }
 #btnLimparRascunho:hover { color: #e53935; }
 </style>
