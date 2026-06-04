@@ -6,19 +6,16 @@
   <title>Avaliação de Visita – Apoio | NutriSaúde</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #f0f4f8;
       min-height: 100vh;
       padding: 24px 16px 48px;
     }
-
     .container {
       max-width: 700px;
       margin: 0 auto;
     }
-
     /* HEADER */
     .header {
       background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #43a047 100%);
@@ -28,7 +25,6 @@
       align-items: center;
       gap: 18px;
     }
-
     .logo-circle {
       width: 52px;
       height: 52px;
@@ -43,21 +39,17 @@
       flex-shrink: 0;
       border: 2px solid rgba(255,255,255,0.3);
     }
-
     .header-text h1 {
       font-size: 20px;
       font-weight: 700;
       color: #fff;
       letter-spacing: 0.3px;
     }
-
     .header-text p {
       font-size: 13px;
       color: rgba(255,255,255,0.8);
       margin-top: 4px;
     }
-
-    /* REQUIRED NOTE */
     .required-note {
       background: #fff;
       padding: 10px 32px;
@@ -65,19 +57,15 @@
       color: #888;
       border-bottom: 1px solid #e8edf2;
     }
-
-    /* CARD */
     .card {
       background: #fff;
       padding: 28px 32px;
       border-bottom: 1px solid #e8edf2;
     }
-
     .card:last-of-type {
       border-radius: 0 0 16px 16px;
       border-bottom: none;
     }
-
     .section-title {
       font-size: 11px;
       font-weight: 700;
@@ -88,14 +76,10 @@
       padding-bottom: 8px;
       border-bottom: 2px solid #e8f5e9;
     }
-
-    /* FORM FIELDS */
     .field {
       margin-bottom: 20px;
     }
-
     .field:last-child { margin-bottom: 0; }
-
     label {
       display: block;
       font-size: 12px;
@@ -105,9 +89,7 @@
       letter-spacing: 0.6px;
       margin-bottom: 7px;
     }
-
     label .req { color: #e53935; margin-left: 2px; }
-
     input[type="text"],
     input[type="date"],
     textarea,
@@ -123,7 +105,6 @@
       outline: none;
       font-family: inherit;
     }
-
     input[type="text"]:focus,
     input[type="date"]:focus,
     textarea:focus,
@@ -132,33 +113,26 @@
       box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
       background: #fff;
     }
-
     input[readonly] {
       background: #f0f4f8;
       color: #555;
       cursor: default;
     }
-
     input[readonly]:focus {
       border-color: #d0d7de;
       box-shadow: none;
     }
-
     textarea { resize: vertical; min-height: 90px; }
-
     .field-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
-
     @media (max-width: 500px) {
       .field-row { grid-template-columns: 1fr; }
       .header { padding: 20px; }
       .card { padding: 20px; }
     }
-
-    /* RATING */
     .rating-label {
       font-size: 12px;
       font-weight: 700;
@@ -167,17 +141,13 @@
       letter-spacing: 0.6px;
       margin-bottom: 12px;
     }
-
     .rating-label .req { color: #e53935; margin-left: 2px; }
-
     .rating-track {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
     }
-
     .rating-track input[type="radio"] { display: none; }
-
     .rating-track label {
       width: 44px;
       height: 44px;
@@ -195,7 +165,6 @@
       letter-spacing: 0;
       margin: 0;
     }
-
     .rating-track input[type="radio"]:checked + label {
       background: #2e7d32;
       border-color: #2e7d32;
@@ -203,13 +172,11 @@
       transform: scale(1.1);
       box-shadow: 0 3px 10px rgba(46,125,50,0.35);
     }
-
     .rating-track label:hover {
       border-color: #2e7d32;
       color: #2e7d32;
       background: #f1f8e9;
     }
-
     .rating-description {
       margin-top: 10px;
       font-size: 12px;
@@ -217,15 +184,11 @@
       display: flex;
       justify-content: space-between;
     }
-
-    /* YES/NO */
     .yesno-group {
       display: flex;
       gap: 10px;
     }
-
     .yesno-group input[type="radio"] { display: none; }
-
     .yesno-group label {
       flex: 1;
       padding: 10px;
@@ -241,45 +204,30 @@
       letter-spacing: 0;
       margin: 0;
     }
-
     .yesno-group input[type="radio"]:checked + label {
       border-color: #2e7d32;
       background: #e8f5e9;
       color: #1b5e20;
     }
-
     .yesno-group label:hover {
       border-color: #2e7d32;
       color: #2e7d32;
     }
-
-    /* CONDITIONAL FIELD */
-    .conditional {
-      margin-top: 12px;
-      display: none;
-    }
-
-    .conditional.visible { display: block; }
-
-    /* SUBMIT */
     .submit-card {
       background: #fff;
       border-radius: 0 0 16px 16px;
       padding: 24px 32px 32px;
       text-align: center;
     }
-
     .submit-note {
       font-size: 12px;
       color: #888;
       margin-bottom: 16px;
     }
-
     .submit-note span {
       color: #2e7d32;
       font-weight: 600;
     }
-
     .btn-submit {
       background: linear-gradient(135deg, #2e7d32, #43a047);
       color: #fff;
@@ -293,12 +241,9 @@
       transition: opacity 0.2s, transform 0.1s;
       box-shadow: 0 4px 14px rgba(46,125,50,0.3);
     }
-
     .btn-submit:hover { opacity: 0.92; transform: translateY(-1px); }
     .btn-submit:active { transform: translateY(0); }
     .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-    /* SUCCESS */
     .success-screen {
       display: none;
       background: #fff;
@@ -307,9 +252,7 @@
       text-align: center;
       box-shadow: 0 4px 24px rgba(0,0,0,0.06);
     }
-
     .success-screen.visible { display: block; }
-
     .success-icon {
       width: 72px;
       height: 72px;
@@ -321,50 +264,36 @@
       font-size: 34px;
       margin: 0 auto 20px;
     }
-
     .success-screen h2 {
       font-size: 22px;
       color: #1b5e20;
       margin-bottom: 10px;
     }
-
     .success-screen p {
       color: #666;
       font-size: 14px;
       line-height: 1.6;
     }
-
-    /* FORM WRAPPER */
     .form-wrapper { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
-
-    /* ERROR */
     .error-msg {
       font-size: 11px;
       color: #e53935;
       margin-top: 5px;
       display: none;
     }
-
     input.invalid, textarea.invalid, select.invalid {
       border-color: #e53935;
     }
   </style>
 </head>
 <body>
-
 <div class="container">
-
-  <!-- SUCCESS SCREEN -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">✅</div>
     <h2>Avaliação enviada!</h2>
     <p>Obrigada pelo seu feedback!<br>Suas respostas foram registradas com sucesso.</p>
   </div>
-
-  <!-- FORM -->
   <div class="form-wrapper" id="formWrapper">
-
-    <!-- Header -->
     <div class="header">
       <div class="logo-circle">N</div>
       <div class="header-text">
@@ -372,26 +301,18 @@
         <p>NutriSaúde · Preencha todos os campos marcados com *</p>
       </div>
     </div>
-
     <div class="required-note">* Campos obrigatórios</div>
-
     <form id="mainForm" novalidate>
-
-      <!-- IDENTIFICAÇÃO -->
       <div class="card">
         <div class="section-title">Identificação</div>
-
         <div class="field">
           <label>Nome completo <span class="req">*</span></label>
           <input type="text" id="nomeCompleto" placeholder="Seu nome completo" required />
           <div class="error-msg" id="err-nome">Campo obrigatório</div>
         </div>
-
         <div class="field" id="field-unidade">
           <label>Unidade <span class="req">*</span></label>
-          <!-- preenchido via JS: texto (readonly) se vier pelo link, select se acesso direto -->
         </div>
-
         <div class="field-row">
           <div class="field">
             <label>Data de início <span class="req">*</span></label>
@@ -404,17 +325,12 @@
             <div class="error-msg" id="err-dataFim">Campo obrigatório</div>
           </div>
         </div>
-
         <div class="field" id="field-apoio">
           <label>Apoio que visitou a unidade <span class="req">*</span></label>
-          <!-- preenchido via JS -->
         </div>
       </div>
-
-      <!-- AVALIAÇÃO -->
       <div class="card">
         <div class="section-title">Avaliação</div>
-
         <div class="field">
           <div class="rating-label">De 0 a 10, qual nota você dá para o apoio? <span class="req">*</span></div>
           <div class="rating-track" id="ratingTrack">
@@ -436,13 +352,11 @@
           </div>
           <div class="error-msg" id="err-nota">Selecione uma nota</div>
         </div>
-
         <div class="field">
           <label>Como você avalia o trabalho realizado? <span class="req">*</span></label>
           <textarea id="avaliacao" placeholder="Comente brevemente como foi a visita..." required></textarea>
           <div class="error-msg" id="err-avaliacao">Campo obrigatório</div>
         </div>
-
         <div class="field">
           <label>Você foi bem atendido(a) pelo apoio? <span class="req">*</span></label>
           <div class="yesno-group">
@@ -454,36 +368,30 @@
           <div class="error-msg" id="err-bemAtendido">Selecione uma opção</div>
         </div>
       </div>
-
-      <!-- SUGESTÕES -->
       <div class="card">
         <div class="section-title">Sugestões e Observações</div>
-
         <div class="field">
           <label>Possui alguma sugestão para melhorias no atendimento?</label>
           <textarea id="sugestoes" placeholder="Compartilhe suas sugestões aqui..."></textarea>
         </div>
-
         <div class="field">
           <label>Gostaria de deixar mais alguma observação?</label>
           <textarea id="observacoes" placeholder="Observações adicionais..."></textarea>
         </div>
       </div>
-
-      <!-- SUBMIT -->
       <div class="card submit-card">
         <p class="submit-note">O formulário será enviado para <span>paloma.miranda@nutrisaude.com.br</span></p>
         <button type="submit" class="btn-submit" id="btnSubmit">✉️ Enviar Avaliação</button>
       </div>
-
     </form>
-  </div><!-- /form-wrapper -->
+  </div>
 </div>
-
 <script>
   // ── CONFIG ──────────────────────────────────────────────────────────────
-  // Substitua pela URL do seu Apps Script Web App (backend)
-  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbw_OiZEUIymwzP7t76tRp6zXkVrQttSzukpyiU62wP7NAqyG2AZliiiuSHQAb5zoE20/exec';
+  // URL do Apps Script do Portal NutriSaude (deployment "Qualquer pessoa")
+  // IMPORTANTE: Após adicionar o doPost no Codigo.gs e republicar com acesso
+  // "Qualquer pessoa, mesmo anônimos", cole a nova URL /exec aqui.
+  const BACKEND_URL = 'https://script.google.com/a/macros/nutrisaude.com.br/s/AKfycbz2yAA4pxCCFQ-Vrp0D_f8HiTQAYtwZUi8nio-J5bvsjqGIUbF0iWicgOFk-HdHwfbg/exec';
   // ────────────────────────────────────────────────────────────────────────
 
   const UNIDADES = [
@@ -520,7 +428,6 @@
   const paramApoio   = params.get('apoio')   || '';
   const dataParam    = params.get('data')    || '';
 
-  // Monta campo Unidade
   const fieldUnidade = document.getElementById('field-unidade');
   if (paramUnidade) {
     fieldUnidade.innerHTML += `<input type="text" id="unidade" value="${paramUnidade}" readonly />`;
@@ -528,7 +435,6 @@
     fieldUnidade.innerHTML += `<select id="unidade"><option value="">Selecione a unidade...</option>${UNIDADES.map(u=>`<option value="${u}">${u}</option>`).join('')}</select><div class="error-msg" id="err-unidade">Campo obrigatório</div>`;
   }
 
-  // Monta campo Apoio
   const fieldApoio = document.getElementById('field-apoio');
   if (paramApoio) {
     fieldApoio.innerHTML += `<input type="text" id="apoio" value="${paramApoio}" readonly />`;
@@ -536,7 +442,6 @@
     fieldApoio.innerHTML += `<select id="apoio"><option value="">Selecione o apoio...</option>${APOIOS.map(a=>`<option value="${a}">${a}</option>`).join('')}</select><div class="error-msg" id="err-apoio">Campo obrigatório</div>`;
   }
 
-  // Datas
   if (dataParam) {
     document.getElementById('dataInicio').value = dataParam;
     document.getElementById('dataFim').value = dataParam;
@@ -548,10 +453,8 @@
     fim.min = this.value;
   });
 
-  // ── VALIDATION & SUBMIT ─────────────────────────────────────────────────
   document.getElementById('mainForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-
     let valid = true;
 
     function validate(id, errId, condition) {
@@ -569,27 +472,20 @@
 
     const nome = document.getElementById('nomeCompleto').value.trim();
     validate('nomeCompleto', 'err-nome', nome.length > 0);
-
     const unidadeVal = document.getElementById('unidade').value.trim();
     if (!paramUnidade) validate('unidade', 'err-unidade', unidadeVal.length > 0);
-
     const apoioVal = document.getElementById('apoio').value.trim();
     if (!paramApoio) validate('apoio', 'err-apoio', apoioVal.length > 0);
-
     const dataInicio = document.getElementById('dataInicio').value;
     validate('dataInicio', 'err-dataInicio', dataInicio.length > 0);
-
     const dataFim = document.getElementById('dataFim').value;
     validate('dataFim', 'err-dataFim', dataFim.length > 0);
-
     const nota = document.querySelector('input[name="nota"]:checked');
     const notaErr = document.getElementById('err-nota');
     if (!nota) { notaErr.style.display = 'block'; valid = false; }
     else { notaErr.style.display = 'none'; }
-
     const avaliacao = document.getElementById('avaliacao').value.trim();
     validate('avaliacao', 'err-avaliacao', avaliacao.length > 0);
-
     const bemAtendido = document.querySelector('input[name="bemAtendido"]:checked');
     const bemErr = document.getElementById('err-bemAtendido');
     if (!bemAtendido) { bemErr.style.display = 'block'; valid = false; }
@@ -605,6 +501,7 @@
     btn.textContent = 'Enviando...';
 
     const payload = {
+      tipo:        'gestoras',
       nome:        nome,
       unidade:     document.getElementById('unidade').value,
       dataInicio:  dataInicio,
@@ -624,11 +521,9 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-
       document.getElementById('formWrapper').style.display = 'none';
       document.getElementById('successScreen').classList.add('visible');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
     } catch (err) {
       btn.disabled = false;
       btn.textContent = '✉️ Enviar Avaliação';
