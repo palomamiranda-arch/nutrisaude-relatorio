@@ -765,6 +765,25 @@ document.getElementById('visitaForm').addEventListener('submit', async function(
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     });
+    // Salvar resumo na planilha do portal NutriSaude
+    fetch('https://script.google.com/a/macros/nutrisaude.com.br/s/AKfycbz2yAA4pxCCFQ-Vrp0D_f8HiTQAYtwZUi8nio-J5bvsjqGIUbF0iWicgOFk-HdHwfbg/exec', {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tipo: 'apoios',
+        unidade: payload.unidade,
+        data_inicio_br: payload.data_inicio_br,
+        data_fim_br: payload.data_fim_br,
+        turno: payload.turno,
+        apoio: payload.apoio,
+        gestora: payload.gestora,
+        supervisao: payload.supervisao,
+        nota: payload.nota,
+        motivo: payload.motivo,
+        tipo_visita: payload.tipo,
+        relatorio: payload.relatorio
+      })
+    }).catch(function(){});
     limparRascunho();
     document.getElementById('visitaForm').style.display = 'none';
     document.getElementById('successScreen').style.display = 'flex';
