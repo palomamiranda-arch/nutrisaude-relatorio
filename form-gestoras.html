@@ -1,535 +1,610 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Avaliação de Visita – Apoio | NutriSaúde</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f0f4f8;
-      min-height: 100vh;
-      padding: 24px 16px 48px;
-    }h
-    .container {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    /* HEADER */
-    .header {
-      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #43a047 100%);
-      border-radius: 16px 16px 0 0;
-      padding: 28px 32px 24px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-    .logo-circle {
-      width: 52px;
-      height: 52px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: 900;
-      color: #fff;
-      flex-shrink: 0;
-      border: 2px solid rgba(255,255,255,0.3);
-    }
-    .header-text h1 {
-      font-size: 20px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: 0.3px;
-    }
-    .header-text p {
-      font-size: 13px;
-      color: rgba(255,255,255,0.8);
-      margin-top: 4px;
-    }
-    .required-note {
-      background: #fff;
-      padding: 10px 32px;
-      font-size: 12px;
-      color: #888;
-      border-bottom: 1px solid #e8edf2;
-    }
-    .card {
-      background: #fff;
-      padding: 28px 32px;
-      border-bottom: 1px solid #e8edf2;
-    }
-    .card:last-of-type {
-      border-radius: 0 0 16px 16px;
-      border-bottom: none;
-    }
-    .section-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      color: #2e7d32;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #e8f5e9;
-    }
-    .field {
-      margin-bottom: 20px;
-    }
-    .field:last-child { margin-bottom: 0; }
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 7px;
-    }
-    label .req { color: #e53935; margin-left: 2px; }
-    input[type="text"],
-    input[type="date"],
-    textarea,
-    select {
-      width: 100%;
-      border: 1.5px solid #d0d7de;
-      border-radius: 8px;
-      padding: 10px 13px;
-      font-size: 14px;
-      color: #222;
-      background: #fafafa;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-      font-family: inherit;
-    }
-    input[type="text"]:focus,
-    input[type="date"]:focus,
-    textarea:focus,
-    select:focus {
-      border-color: #2e7d32;
-      box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
-      background: #fff;
-    }
-    input[readonly] {
-      background: #f0f4f8;
-      color: #555;
-      cursor: default;
-    }
-    input[readonly]:focus {
-      border-color: #d0d7de;
-      box-shadow: none;
-    }
-    textarea { resize: vertical; min-height: 90px; }
-    .field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    @media (max-width: 500px) {
-      .field-row { grid-template-columns: 1fr; }
-      .header { padding: 20px; }
-      .card { padding: 20px; }
-    }
-    .rating-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 12px;
-    }
-    .rating-label .req { color: #e53935; margin-left: 2px; }
-    .rating-track {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .rating-track input[type="radio"] { display: none; }
-    .rating-track label {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid #d0d7de;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 700;
-      color: #555;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-transform: none;
-      letter-spacing: 0;
-      margin: 0;
-    }
-    .rating-track input[type="radio"]:checked + label {
-      background: #2e7d32;
-      border-color: #2e7d32;
-      color: #fff;
-      transform: scale(1.1);
-      box-shadow: 0 3px 10px rgba(46,125,50,0.35);
-    }
-    .rating-track label:hover {
-      border-color: #2e7d32;
-      color: #2e7d32;
-      background: #f1f8e9;
-    }
-    .rating-description {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #888;
-      display: flex;
-      justify-content: space-between;
-    }
-    .yesno-group {
-      display: flex;
-      gap: 10px;
-    }
-    .yesno-group input[type="radio"] { display: none; }
-    .yesno-group label {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #d0d7de;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 700;
-      color: #555;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-transform: none;
-      letter-spacing: 0;
-      margin: 0;
-    }
-    .yesno-group input[type="radio"]:checked + label {
-      border-color: #2e7d32;
-      background: #e8f5e9;
-      color: #1b5e20;
-    }
-    .yesno-group label:hover {
-      border-color: #2e7d32;
-      color: #2e7d32;
-    }
-    .submit-card {
-      background: #fff;
-      border-radius: 0 0 16px 16px;
-      padding: 24px 32px 32px;
-      text-align: center;
-    }
-    .submit-note {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 16px;
-    }
-    .submit-note span {
-      color: #2e7d32;
-      font-weight: 600;
-    }
-    .btn-submit {
-      background: linear-gradient(135deg, #2e7d32, #43a047);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px 48px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: opacity 0.2s, transform 0.1s;
-      box-shadow: 0 4px 14px rgba(46,125,50,0.3);
-    }
-    .btn-submit:hover { opacity: 0.92; transform: translateY(-1px); }
-    .btn-submit:active { transform: translateY(0); }
-    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .success-screen {
-      display: none;
-      background: #fff;
-      border-radius: 16px;
-      padding: 56px 32px;
-      text-align: center;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-    }
-    .success-screen.visible { display: block; }
-    .success-icon {
-      width: 72px;
-      height: 72px;
-      background: #e8f5e9;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      margin: 0 auto 20px;
-    }
-    .success-screen h2 {
-      font-size: 22px;
-      color: #1b5e20;
-      margin-bottom: 10px;
-    }
-    .success-screen p {
-      color: #666;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .form-wrapper { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
-    .error-msg {
-      font-size: 11px;
-      color: #e53935;
-      margin-top: 5px;
-      display: none;
-    }
-    input.invalid, textarea.invalid, select.invalid {
-      border-color: #e53935;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Avaliação de Visita – Apoio | NutriSaúde</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: Arial, Helvetica, sans-serif;
+background: #f0f4f8;
+min-height: 100vh;
+padding: 24px 16px 48px;
+}h
+.container {
+max-width: 700px;
+margin: 0 auto;
+}
+/* HEADER */
+.header {
+background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 60%, #43a047 100%);
+border-radius: 16px 16px 0 0;
+padding: 28px 32px 24px;
+display: flex;
+align-items: center;
+gap: 18px;
+}
+.logo-circle {
+width: 52px;
+height: 52px;
+background: rgba(255,255,255,0.15);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 22px;
+font-weight: 900;
+color: #fff;
+flex-shrink: 0;
+border: 2px solid rgba(255,255,255,0.3);
+}
+.header-text h1 {
+font-size: 20px;
+font-weight: 700;
+color: #fff;
+letter-spacing: 0.3px;
+}
+.header-text p {
+font-size: 13px;
+color: rgba(255,255,255,0.8);
+margin-top: 4px;
+}
+.required-note {
+background: #fff;
+padding: 10px 32px;
+font-size: 12px;
+color: #888;
+border-bottom: 1px solid #e8edf2;
+}
+.card {
+background: #fff;
+padding: 28px 32px;
+border-bottom: 1px solid #e8edf2;
+}
+.card:last-of-type {
+border-radius: 0 0 16px 16px;
+border-bottom: none;
+}
+.section-title {
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 1.2px;
+color: #2e7d32;
+text-transform: uppercase;
+margin-bottom: 20px;
+padding-bottom: 8px;
+border-bottom: 2px solid #e8f5e9;
+}
+.field {
+margin-bottom: 20px;
+}
+.field:last-child { margin-bottom: 0; }
+label {
+display: block;
+font-size: 12px;
+font-weight: 700;
+color: #444;
+text-transform: uppercase;
+letter-spacing: 0.6px;
+margin-bottom: 7px;
+}
+label .req { color: #e53935; margin-left: 2px; }
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+width: 100%;
+border: 1.5px solid #d0d7de;
+border-radius: 8px;
+padding: 10px 13px;
+font-size: 14px;
+color: #222;
+background: #fafafa;
+transition: border-color 0.2s, box-shadow 0.2s;
+outline: none;
+font-family: inherit;
+}
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus,
+select:focus {
+border-color: #2e7d32;
+box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+background: #fff;
+}
+input[readonly] {
+background: #f0f4f8;
+color: #555;
+cursor: default;
+}
+input[readonly]:focus {
+border-color: #d0d7de;
+box-shadow: none;
+}
+textarea { resize: vertical; min-height: 90px; }
+.field-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 16px;
+}
+@media (max-width: 500px) {
+.field-row { grid-template-columns: 1fr; }
+.header { padding: 20px; }
+.card { padding: 20px; }
+}
+.rating-label {
+font-size: 12px;
+font-weight: 700;
+color: #444;
+text-transform: uppercase;
+letter-spacing: 0.6px;
+margin-bottom: 12px;
+}
+.rating-label .req { color: #e53935; margin-left: 2px; }
+.rating-track {
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+}
+.rating-track input[type="radio"] { display: none; }
+.rating-track label {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+border: 2px solid #d0d7de;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 15px;
+font-weight: 700;
+color: #555;
+cursor: pointer;
+transition: all 0.15s;
+text-transform: none;
+letter-spacing: 0;
+margin: 0;
+}
+.rating-track input[type="radio"]:checked + label {
+background: #2e7d32;
+border-color: #2e7d32;
+color: #fff;
+transform: scale(1.1);
+box-shadow: 0 3px 10px rgba(46,125,50,0.35);
+}
+.rating-track label:hover {
+border-color: #2e7d32;
+color: #2e7d32;
+background: #f1f8e9;
+}
+.rating-description {
+margin-top: 10px;
+font-size: 12px;
+color: #888;
+display: flex;
+justify-content: space-between;
+}
+.yesno-group {
+display: flex;
+gap: 10px;
+}
+.yesno-group input[type="radio"] { display: none; }
+.yesno-group label {
+flex: 1;
+padding: 10px;
+border: 2px solid #d0d7de;
+border-radius: 8px;
+text-align: center;
+font-size: 13px;
+font-weight: 700;
+color: #555;
+cursor: pointer;
+transition: all 0.15s;
+text-transform: none;
+letter-spacing: 0;
+margin: 0;
+}
+.yesno-group input[type="radio"]:checked + label {
+border-color: #2e7d32;
+background: #e8f5e9;
+color: #1b5e20;
+}
+.yesno-group label:hover {
+border-color: #2e7d32;
+color: #2e7d32;
+}
+.submit-card {
+background: #fff;
+border-radius: 0 0 16px 16px;
+padding: 24px 32px 32px;
+text-align: center;
+}
+.submit-note {
+font-size: 12px;
+color: #888;
+margin-bottom: 16px;
+}
+.submit-note span {
+color: #2e7d32;
+font-weight: 600;
+}
+.btn-submit {
+background: linear-gradient(135deg, #2e7d32, #43a047);
+color: #fff;
+border: none;
+border-radius: 10px;
+padding: 14px 48px;
+font-size: 15px;
+font-weight: 700;
+cursor: pointer;
+letter-spacing: 0.5px;
+transition: opacity 0.2s, transform 0.1s;
+box-shadow: 0 4px 14px rgba(46,125,50,0.3);
+}
+.btn-submit:hover { opacity: 0.92; transform: translateY(-1px); }
+.btn-submit:active { transform: translateY(0); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.success-screen {
+display: none;
+background: #fff;
+border-radius: 16px;
+padding: 56px 32px;
+text-align: center;
+box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+.success-screen.visible { display: block; }
+.success-icon {
+width: 72px;
+height: 72px;
+background: #e8f5e9;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 34px;
+margin: 0 auto 20px;
+}
+.success-screen h2 {
+font-size: 22px;
+color: #1b5e20;
+margin-bottom: 10px;
+}
+.success-screen p {
+color: #666;
+font-size: 14px;
+line-height: 1.6;
+}
+.btn-pdf {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-top: 24px;
+padding: 12px 32px;
+background: #1565c0;
+color: #fff;
+border: none;
+border-radius: 10px;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+transition: opacity 0.2s;
+box-shadow: 0 4px 12px rgba(21,101,192,0.3);
+}
+.btn-pdf:hover { opacity: 0.88; }
+.form-wrapper { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+.error-msg {
+font-size: 11px;
+color: #e53935;
+margin-top: 5px;
+display: none;
+}
+input.invalid, textarea.invalid, select.invalid {
+border-color: #e53935;
+}
+</style>
 </head>
 <body>
 <div class="container">
-  <div class="success-screen" id="successScreen">
-    <div class="success-icon">✅</div>
-    <h2>Avaliação enviada!</h2>
-    <p>Obrigada pelo seu feedback!<br>Suas respostas foram registradas com sucesso.</p>
-  </div>
-  <div class="form-wrapper" id="formWrapper">
-    <div class="header">
-      <div class="logo-circle">N</div>
-      <div class="header-text">
-        <h1>Avaliação de Visita – Apoio</h1>
-        <p>NutriSaúde · Preencha todos os campos marcados com *</p>
-      </div>
-    </div>
-    <div class="required-note">* Campos obrigatórios</div>
-    <form id="mainForm" novalidate>
-      <div class="card">
-        <div class="section-title">Identificação</div>
-        <div class="field">
-          <label>Nome completo <span class="req">*</span></label>
-          <input type="text" id="nomeCompleto" placeholder="Seu nome completo" required />
-          <div class="error-msg" id="err-nome">Campo obrigatório</div>
-        </div>
-        <div class="field" id="field-unidade">
-          <label>Unidade <span class="req">*</span></label>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label>Data de início <span class="req">*</span></label>
-            <input type="date" id="dataInicio" />
-            <div class="error-msg" id="err-dataInicio">Campo obrigatório</div>
-          </div>
-          <div class="field">
-            <label>Data de fim <span class="req">*</span></label>
-            <input type="date" id="dataFim" />
-            <div class="error-msg" id="err-dataFim">Campo obrigatório</div>
-          </div>
-        </div>
-        <div class="field" id="field-apoio">
-          <label>Apoio que visitou a unidade <span class="req">*</span></label>
-        </div>
-      </div>
-      <div class="card">
-        <div class="section-title">Avaliação</div>
-        <div class="field">
-          <div class="rating-label">De 0 a 10, qual nota você dá para o apoio? <span class="req">*</span></div>
-          <div class="rating-track" id="ratingTrack">
-            <input type="radio" name="nota" id="n0" value="0"><label for="n0">0</label>
-            <input type="radio" name="nota" id="n1" value="1"><label for="n1">1</label>
-            <input type="radio" name="nota" id="n2" value="2"><label for="n2">2</label>
-            <input type="radio" name="nota" id="n3" value="3"><label for="n3">3</label>
-            <input type="radio" name="nota" id="n4" value="4"><label for="n4">4</label>
-            <input type="radio" name="nota" id="n5" value="5"><label for="n5">5</label>
-            <input type="radio" name="nota" id="n6" value="6"><label for="n6">6</label>
-            <input type="radio" name="nota" id="n7" value="7"><label for="n7">7</label>
-            <input type="radio" name="nota" id="n8" value="8"><label for="n8">8</label>
-            <input type="radio" name="nota" id="n9" value="9"><label for="n9">9</label>
-            <input type="radio" name="nota" id="n10" value="10"><label for="n10">10</label>
-          </div>
-          <div class="rating-description">
-            <span>Muito ruim</span>
-            <span>Excelente</span>
-          </div>
-          <div class="error-msg" id="err-nota">Selecione uma nota</div>
-        </div>
-        <div class="field">
-          <label>Como você avalia o trabalho realizado? <span class="req">*</span></label>
-          <textarea id="avaliacao" placeholder="Comente brevemente como foi a visita..." required></textarea>
-          <div class="error-msg" id="err-avaliacao">Campo obrigatório</div>
-        </div>
-        <div class="field">
-          <label>Você foi bem atendido(a) pelo apoio? <span class="req">*</span></label>
-          <div class="yesno-group">
-            <input type="radio" name="bemAtendido" id="bemSim" value="Sim">
-            <label for="bemSim">✅ Sim</label>
-            <input type="radio" name="bemAtendido" id="bemNao" value="Não">
-            <label for="bemNao">❌ Não</label>
-          </div>
-          <div class="error-msg" id="err-bemAtendido">Selecione uma opção</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="section-title">Sugestões e Observações</div>
-        <div class="field">
-          <label>Possui alguma sugestão para melhorias no atendimento?</label>
-          <textarea id="sugestoes" placeholder="Compartilhe suas sugestões aqui..."></textarea>
-        </div>
-        <div class="field">
-          <label>Gostaria de deixar mais alguma observação?</label>
-          <textarea id="observacoes" placeholder="Observações adicionais..."></textarea>
-        </div>
-      </div>
-      <div class="card submit-card">
-        <p class="submit-note">O formulário será enviado para <span>paloma.miranda@nutrisaude.com.br</span></p>
-        <button type="submit" class="btn-submit" id="btnSubmit">✉️ Enviar Avaliação</button>
-      </div>
-    </form>
-  </div>
+<div class="success-screen" id="successScreen">
+<div class="success-icon">✅</div>
+<h2>Avaliação enviada!</h2>
+<p>Obrigada pelo seu feedback!<br>Suas respostas foram registradas com sucesso.</p>
+<button class="btn-pdf" onclick="gerarPDF()">📄 Ver Formulário em PDF</button>
+</div>
+<div class="form-wrapper" id="formWrapper">
+<div class="header">
+<div class="logo-circle">N</div>
+<div class="header-text">
+<h1>Avaliação de Visita – Apoio</h1>
+<p>NutriSaúde · Preencha todos os campos marcados com *</p>
+</div>
+</div>
+<div class="required-note">* Campos obrigatórios</div>
+<form id="mainForm" novalidate>
+<div class="card">
+<div class="section-title">Identificação</div>
+<div class="field">
+<label>Nome completo <span class="req">*</span></label>
+<input type="text" id="nomeCompleto" placeholder="Seu nome completo" required />
+<div class="error-msg" id="err-nome">Campo obrigatório</div>
+</div>
+<div class="field" id="field-unidade">
+<label>Unidade <span class="req">*</span></label>
+</div>
+<div class="field-row">
+<div class="field">
+<label>Data de início <span class="req">*</span></label>
+<input type="date" id="dataInicio" />
+<div class="error-msg" id="err-dataInicio">Campo obrigatório</div>
+</div>
+<div class="field">
+<label>Data de fim <span class="req">*</span></label>
+<input type="date" id="dataFim" />
+<div class="error-msg" id="err-dataFim">Campo obrigatório</div>
+</div>
+</div>
+<div class="field" id="field-apoio">
+<label>Apoio que visitou a unidade <span class="req">*</span></label>
+</div>
+</div>
+<div class="card">
+<div class="section-title">Avaliação</div>
+<div class="field">
+<div class="rating-label">De 0 a 10, qual nota você dá para o apoio? <span class="req">*</span></div>
+<div class="rating-track" id="ratingTrack">
+<input type="radio" name="nota" id="n0" value="0"><label for="n0">0</label>
+<input type="radio" name="nota" id="n1" value="1"><label for="n1">1</label>
+<input type="radio" name="nota" id="n2" value="2"><label for="n2">2</label>
+<input type="radio" name="nota" id="n3" value="3"><label for="n3">3</label>
+<input type="radio" name="nota" id="n4" value="4"><label for="n4">4</label>
+<input type="radio" name="nota" id="n5" value="5"><label for="n5">5</label>
+<input type="radio" name="nota" id="n6" value="6"><label for="n6">6</label>
+<input type="radio" name="nota" id="n7" value="7"><label for="n7">7</label>
+<input type="radio" name="nota" id="n8" value="8"><label for="n8">8</label>
+<input type="radio" name="nota" id="n9" value="9"><label for="n9">9</label>
+<input type="radio" name="nota" id="n10" value="10"><label for="n10">10</label>
+</div>
+<div class="rating-description">
+<span>Muito ruim</span>
+<span>Excelente</span>
+</div>
+<div class="error-msg" id="err-nota">Selecione uma nota</div>
+</div>
+<div class="field">
+<label>Como você avalia o trabalho realizado? <span class="req">*</span></label>
+<textarea id="avaliacao" placeholder="Comente brevemente como foi a visita..." required></textarea>
+<div class="error-msg" id="err-avaliacao">Campo obrigatório</div>
+</div>
+<div class="field">
+<label>Você foi bem atendido(a) pelo apoio? <span class="req">*</span></label>
+<div class="yesno-group">
+<input type="radio" name="bemAtendido" id="bemSim" value="Sim">
+<label for="bemSim">✅ Sim</label>
+<input type="radio" name="bemAtendido" id="bemNao" value="Não">
+<label for="bemNao">❌ Não</label>
+</div>
+<div class="error-msg" id="err-bemAtendido">Selecione uma opção</div>
+</div>
+</div>
+<div class="card">
+<div class="section-title">Sugestões e Observações</div>
+<div class="field">
+<label>Possui alguma sugestão para melhorias no atendimento?</label>
+<textarea id="sugestoes" placeholder="Compartilhe suas sugestões aqui..."></textarea>
+</div>
+<div class="field">
+<label>Gostaria de deixar mais alguma observação?</label>
+<textarea id="observacoes" placeholder="Observações adicionais..."></textarea>
+</div>
+</div>
+<div class="card submit-card">
+<p class="submit-note">O formulário será enviado para <span>paloma.miranda@nutrisaude.com.br</span></p>
+<button type="submit" class="btn-submit" id="btnSubmit">✉️ Enviar Avaliação</button>
+</div>
+</form>
+</div>
 </div>
 <script>
-  // ── CONFIG ──────────────────────────────────────────────────────────────
-  // URL do Apps Script do Portal NutriSaude (deployment "Qualquer pessoa")
-  // IMPORTANTE: Após adicionar o doPost no Codigo.gs e republicar com acesso
-  // "Qualquer pessoa, mesmo anônimos", cole a nova URL /exec aqui.
-  const BACKEND_URL = 'https://script.google.com/a/macros/nutrisaude.com.br/s/AKfycbz2yAA4pxCCFQ-Vrp0D_f8HiTQAYtwZUi8nio-J5bvsjqGIUbF0iWicgOFk-HdHwfbg/exec';
-  // ────────────────────────────────────────────────────────────────────────
+let ultimoPayload = null;
 
-  const UNIDADES = [
-    'Alles','Ambiental','ASB Águas Sta Barbara','ASB Campos','ASB Perus',
-    'Bbosch','Biatex','Bresco','BTG 1','BTG VIII',
-    'Cainco','Cetro','CHS','Dori Filial','Dori Matriz','Dori Rolândia',
-    'Dongwon','Ebara','Ebara Thebe','Flash Cover','GLP','GLP VIII',
-    'Haribo','Hospital Araraquara','Hospital Unimed Limeira','Hospital Unimed Rio Verde',
-    'Hospital Versânia','Hosp. Bene','HS Telecom','Hwashin','Ikatec','Injex',
-    'Innovapack','Jazam','Jornal Cruzeiro do Sul','Kimberlit','Kimetais',
-    'Laponia','Latam','Loyder','Marilia','Maringa','Marvi','Matriz',
-    'Mectrol','Merieux Ambiental','Merieux Laboratorios','Metaltork',
-    'Metax Campinas','Metax Ribeirão','Metax SP','Minalba Belém',
-    'Mirassol Guarulhos','Mirassol Jundiaí','NGB Aracaju','NGB Araucária',
-    'NGB Bauru','NGB Belém','NGB Canoas I','NGB Canoas II','NGB Itajaí',
-    'NGB Ipojuca','NGB Juazeiro','NGB Macaé I','NGB Macaé II','NGB Mauá I',
-    'NGB Mauá II','NGB Paulínia','NGB São Francisco','NGB São Luís',
-    'NGB Senador Canedo','Nipro','Noroeste','Pequeno Mundo','Plastrela',
-    'Polimaquinas','Preferida','Reckitt','Refrix','Reval','SH',
-    'São Carlos','São Carlos 2','Sasazaki','SH','Spiltag','Stalo',
-    'Tiliform','Tudor','Unimed Bauru','Unimed Campo Grande','Unimed Ribeirão',
-    'Vannucci','Vaxxinova','Maternidade Campinas','Hospital Unimed São Carlos',
-    'Clinica Campo Grande','Biomecanica'
-  ].sort();
+// ── CONFIG ──
+const BACKEND_URL = 'https://script.google.com/a/macros/nutrisaude.com.br/s/AKfycbz2yAA4pxCCFQ-Vrp0D_f8HiTQAYtwZUi8nio-J5bvsjqGIUbF0iWicgOFk-HdHwfbg/exec';
 
-  const APOIOS = [
-    'Andreia','Cleber','Fabiana','Fabio','Francine',
-    'Gabriela','Gisele','Julia','Letícia','Levi',
-    'Paloma','Ricardo'
-  ].sort();
+const UNIDADES = [
+'Alles','Ambiental','ASB Águas Sta Barbara','ASB Campos','ASB Perus',
+'Bbosch','Biatex','Bresco','BTG 1','BTG VIII',
+'Cainco','Cetro','CHS','Dori Filial','Dori Matriz','Dori Rolândia',
+'Dongwon','Ebara','Ebara Thebe','Flash Cover','GLP','GLP VIII',
+'Haribo','Hospital Araraquara','Hospital Unimed Limeira','Hospital Unimed Rio Verde',
+'Hospital Versânia','Hosp. Bene','HS Telecom','Hwashin','Ikatec','Injex',
+'Innovapack','Jazam','Jornal Cruzeiro do Sul','Kimberlit','Kimetais',
+'Laponia','Latam','Loyder','Marilia','Maringa','Marvi','Matriz',
+'Mectrol','Merieux Ambiental','Merieux Laboratorios','Metaltork',
+'Metax Campinas','Metax Ribeirão','Metax SP','Minalba Belém',
+'Mirassol Guarulhos','Mirassol Jundiaí','NGB Aracaju','NGB Araucária',
+'NGB Bauru','NGB Belém','NGB Canoas I','NGB Canoas II','NGB Itajaí',
+'NGB Ipojuca','NGB Juazeiro','NGB Macaé I','NGB Macaé II','NGB Mauá I',
+'NGB Mauá II','NGB Paulínia','NGB São Francisco','NGB São Luís',
+'NGB Senador Canedo','Nipro','Noroeste','Pequeno Mundo','Plastrela',
+'Polimaquinas','Preferida','Reckitt','Refrix','Reval','SH',
+'São Carlos','São Carlos 2','Sasazaki','SH','Spiltag','Stalo',
+'Tiliform','Tudor','Unimed Bauru','Unimed Campo Grande','Unimed Ribeirão',
+'Vannucci','Vaxxinova','Maternidade Campinas','Hospital Unimed São Carlos',
+'Clinica Campo Grande','Biomecanica'
+].sort();
 
-  const params = new URLSearchParams(window.location.search);
-  const paramUnidade = params.get('unidade') || '';
-  const paramApoio   = params.get('apoio')   || '';
-  const dataParam    = params.get('data')    || '';
+const APOIOS = [
+'Andreia','Cleber','Fabiana','Fabio','Francine',
+'Gabriela','Gisele','Julia','Letícia','Levi',
+'Paloma','Ricardo'
+].sort();
 
-  const fieldUnidade = document.getElementById('field-unidade');
-  if (paramUnidade) {
-    fieldUnidade.innerHTML += `<input type="text" id="unidade" value="${paramUnidade}" readonly />`;
-  } else {
-    fieldUnidade.innerHTML += `<select id="unidade"><option value="">Selecione a unidade...</option>${UNIDADES.map(u=>`<option value="${u}">${u}</option>`).join('')}</select><div class="error-msg" id="err-unidade">Campo obrigatório</div>`;
-  }
+const params = new URLSearchParams(window.location.search);
+const paramUnidade = params.get('unidade') || '';
+const paramApoio = params.get('apoio') || '';
+const dataParam = params.get('data') || '';
 
-  const fieldApoio = document.getElementById('field-apoio');
-  if (paramApoio) {
-    fieldApoio.innerHTML += `<input type="text" id="apoio" value="${paramApoio}" readonly />`;
-  } else {
-    fieldApoio.innerHTML += `<select id="apoio"><option value="">Selecione o apoio...</option>${APOIOS.map(a=>`<option value="${a}">${a}</option>`).join('')}</select><div class="error-msg" id="err-apoio">Campo obrigatório</div>`;
-  }
+const fieldUnidade = document.getElementById('field-unidade');
+if (paramUnidade) {
+fieldUnidade.innerHTML += `<input type="text" id="unidade" value="${paramUnidade}" readonly />`;
+} else {
+fieldUnidade.innerHTML += `<select id="unidade"><option value="">Selecione a unidade...</option>${UNIDADES.map(u=>`<option value="${u}">${u}</option>`).join('')}</select><div class="error-msg" id="err-unidade">Campo obrigatório</div>`;
+}
 
-  if (dataParam) {
-    document.getElementById('dataInicio').value = dataParam;
-    document.getElementById('dataFim').value = dataParam;
-  }
+const fieldApoio = document.getElementById('field-apoio');
+if (paramApoio) {
+fieldApoio.innerHTML += `<input type="text" id="apoio" value="${paramApoio}" readonly />`;
+} else {
+fieldApoio.innerHTML += `<select id="apoio"><option value="">Selecione o apoio...</option>${APOIOS.map(a=>`<option value="${a}">${a}</option>`).join('')}</select><div class="error-msg" id="err-apoio">Campo obrigatório</div>`;
+}
 
-  document.getElementById('dataInicio').addEventListener('change', function() {
-    const fim = document.getElementById('dataFim');
-    if (fim.value && fim.value < this.value) fim.value = this.value;
-    fim.min = this.value;
-  });
+if (dataParam) {
+document.getElementById('dataInicio').value = dataParam;
+document.getElementById('dataFim').value = dataParam;
+}
 
-  document.getElementById('mainForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    let valid = true;
+document.getElementById('dataInicio').addEventListener('change', function() {
+const fim = document.getElementById('dataFim');
+if (fim.value && fim.value < this.value) fim.value = this.value;
+fim.min = this.value;
+});
 
-    function validate(id, errId, condition) {
-      const el = document.getElementById(id);
-      const err = document.getElementById(errId);
-      if (!condition) {
-        if (el) el.classList.add('invalid');
-        if (err) err.style.display = 'block';
-        valid = false;
-      } else {
-        if (el) el.classList.remove('invalid');
-        if (err) err.style.display = 'none';
-      }
-    }
+document.getElementById('mainForm').addEventListener('submit', async function(e) {
+e.preventDefault();
+let valid = true;
 
-    const nome = document.getElementById('nomeCompleto').value.trim();
-    validate('nomeCompleto', 'err-nome', nome.length > 0);
-    const unidadeVal = document.getElementById('unidade').value.trim();
-    if (!paramUnidade) validate('unidade', 'err-unidade', unidadeVal.length > 0);
-    const apoioVal = document.getElementById('apoio').value.trim();
-    if (!paramApoio) validate('apoio', 'err-apoio', apoioVal.length > 0);
-    const dataInicio = document.getElementById('dataInicio').value;
-    validate('dataInicio', 'err-dataInicio', dataInicio.length > 0);
-    const dataFim = document.getElementById('dataFim').value;
-    validate('dataFim', 'err-dataFim', dataFim.length > 0);
-    const nota = document.querySelector('input[name="nota"]:checked');
-    const notaErr = document.getElementById('err-nota');
-    if (!nota) { notaErr.style.display = 'block'; valid = false; }
-    else { notaErr.style.display = 'none'; }
-    const avaliacao = document.getElementById('avaliacao').value.trim();
-    validate('avaliacao', 'err-avaliacao', avaliacao.length > 0);
-    const bemAtendido = document.querySelector('input[name="bemAtendido"]:checked');
-    const bemErr = document.getElementById('err-bemAtendido');
-    if (!bemAtendido) { bemErr.style.display = 'block'; valid = false; }
-    else { bemErr.style.display = 'none'; }
+function validate(id, errId, condition) {
+const el = document.getElementById(id);
+const err = document.getElementById(errId);
+if (!condition) {
+if (el) el.classList.add('invalid');
+if (err) err.style.display = 'block';
+valid = false;
+} else {
+if (el) el.classList.remove('invalid');
+if (err) err.style.display = 'none';
+}
+}
 
-    if (!valid) {
-      document.querySelector('.invalid, [style*="block"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
+const nome = document.getElementById('nomeCompleto').value.trim();
+validate('nomeCompleto', 'err-nome', nome.length > 0);
+const unidadeVal = document.getElementById('unidade').value.trim();
+if (!paramUnidade) validate('unidade', 'err-unidade', unidadeVal.length > 0);
+const apoioVal = document.getElementById('apoio').value.trim();
+if (!paramApoio) validate('apoio', 'err-apoio', apoioVal.length > 0);
+const dataInicio = document.getElementById('dataInicio').value;
+validate('dataInicio', 'err-dataInicio', dataInicio.length > 0);
+const dataFim = document.getElementById('dataFim').value;
+validate('dataFim', 'err-dataFim', dataFim.length > 0);
+const nota = document.querySelector('input[name="nota"]:checked');
+const notaErr = document.getElementById('err-nota');
+if (!nota) { notaErr.style.display = 'block'; valid = false; }
+else { notaErr.style.display = 'none'; }
+const avaliacao = document.getElementById('avaliacao').value.trim();
+validate('avaliacao', 'err-avaliacao', avaliacao.length > 0);
+const bemAtendido = document.querySelector('input[name="bemAtendido"]:checked');
+const bemErr = document.getElementById('err-bemAtendido');
+if (!bemAtendido) { bemErr.style.display = 'block'; valid = false; }
+else { bemErr.style.display = 'none'; }
 
-    const btn = document.getElementById('btnSubmit');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
+if (!valid) {
+document.querySelector('.invalid, [style*="block"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+return;
+}
 
-    const payload = {
-      tipo:        'gestoras',
-      nome:        nome,
-      unidade:     document.getElementById('unidade').value,
-      dataInicio:  dataInicio,
-      dataFim:     dataFim,
-      apoio:       document.getElementById('apoio').value,
-      nota:        nota ? nota.value : '',
-      avaliacao:   avaliacao,
-      bemAtendido: bemAtendido ? bemAtendido.value : '',
-      sugestoes:   document.getElementById('sugestoes').value.trim(),
-      observacoes: document.getElementById('observacoes').value.trim(),
-    };
+const btn = document.getElementById('btnSubmit');
+btn.disabled = true;
+btn.textContent = 'Enviando...';
 
-    try {
-      await fetch(BACKEND_URL, {
-        method: 'POST',
-        mode: 'no-cors', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      document.getElementById('formWrapper').style.display = 'none';
-      document.getElementById('successScreen').classList.add('visible');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err) {
-      btn.disabled = false;
-      btn.textContent = '✉️ Enviar Avaliação';
-      alert('Erro ao enviar. Verifique sua conexão e tente novamente.');
-    }
-  });
+const payload = {
+tipo: 'gestoras',
+nome: nome,
+unidade: document.getElementById('unidade').value,
+dataInicio: dataInicio,
+dataFim: dataFim,
+apoio: document.getElementById('apoio').value,
+nota: nota ? nota.value : '',
+avaliacao: avaliacao,
+bemAtendido: bemAtendido ? bemAtendido.value : '',
+sugestoes: document.getElementById('sugestoes').value.trim(),
+observacoes: document.getElementById('observacoes').value.trim(),
+};
+
+try {
+await fetch(BACKEND_URL, {
+method: 'POST',
+mode: 'no-cors', credentials: 'include',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(payload)
+});
+ultimoPayload = payload;
+document.getElementById('formWrapper').style.display = 'none';
+document.getElementById('successScreen').classList.add('visible');
+window.scrollTo({ top: 0, behavior: 'smooth' });
+} catch (err) {
+btn.disabled = false;
+btn.textContent = '✉️ Enviar Avaliação';
+alert('Erro ao enviar. Verifique sua conexão e tente novamente.');
+}
+});
+
+function gerarPDF() {
+if (!ultimoPayload) return;
+const p = ultimoPayload;
+
+function fmtData(d) {
+if (!d) return '—';
+const parts = d.split('-');
+return parts[2] + '/' + parts[1] + '/' + parts[0];
+}
+
+const notaNum = parseInt(p.nota);
+const notaCor = notaNum <= 4 ? '#e53935' : notaNum <= 6 ? '#fb8c00' : '#2e7d32';
+const notaLabel = ['😟 Muito ruim','😟 Muito ruim','😕 Ruim','😕 Ruim','😐 Regular','😐 Regular','🙂 Razoável','🙂 Razoável','😊 Bom','😊 Bom','🌟 Excelente'][notaNum] || '';
+
+const html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Avaliação – ' + p.apoio + ' – ' + p.unidade + '</title><style>' +
+'body{font-family:Arial,sans-serif;max-width:700px;margin:0 auto;padding:32px;color:#222;}' +
+'@media print{body{padding:16px}button{display:none!important}}' +
+'.header{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:white;padding:24px 28px;border-radius:12px;margin-bottom:24px;}' +
+'.header h1{font-size:20px;margin-bottom:4px;}.header p{font-size:13px;opacity:.85;}' +
+'.section{margin-bottom:20px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;}' +
+'.stitle{background:#f1f8e9;padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2e7d32;border-bottom:1px solid #e0e0e0;}' +
+'.sbody{padding:16px;}' +
+'.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;}' +
+'.fl{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}' +
+'.fv{font-size:14px;color:#222;}' +
+'.nota-badge{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;font-size:20px;font-weight:700;color:white;margin-bottom:6px;}' +
+'.full{grid-column:1/-1;}' +
+'.footer{text-align:center;color:#aaa;font-size:11px;margin-top:32px;border-top:1px solid #eee;padding-top:16px;}' +
+'.print-btn{display:block;margin:0 auto 24px;padding:10px 28px;background:#1565c0;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;}' +
+'</style></head><body>' +
+'<button class="print-btn" onclick="window.print()">🖨️ Imprimir / Salvar como PDF</button>' +
+'<div class="header"><h1>Avaliação de Visita – Apoio</h1><p>NutriSaúde · Gerado em ' + new Date().toLocaleDateString('pt-BR') + '</p></div>' +
+'<div class="section"><div class="stitle">Identificação</div><div class="sbody"><div class="row">' +
+'<div><div class="fl">Nome</div><div class="fv">' + p.nome + '</div></div>' +
+'<div><div class="fl">Unidade</div><div class="fv">' + p.unidade + '</div></div>' +
+'<div><div class="fl">Data de Início</div><div class="fv">' + fmtData(p.dataInicio) + '</div></div>' +
+'<div><div class="fl">Data de Fim</div><div class="fv">' + fmtData(p.dataFim) + '</div></div>' +
+'<div class="full"><div class="fl">Apoio Visitante</div><div class="fv">' + p.apoio + '</div></div>' +
+'</div></div></div>' +
+'<div class="section"><div class="stitle">Avaliação</div><div class="sbody">' +
+'<div style="margin-bottom:16px"><div class="fl">Nota para o apoio (0–10)</div>' +
+'<div style="margin-top:8px"><div class="nota-badge" style="background:' + notaCor + '">' + p.nota + '</div><br><span style="font-size:13px;color:' + notaCor + ';font-weight:700">' + notaLabel + '</span></div></div>' +
+'<div style="margin-bottom:16px"><div class="fl">Como você avalia o trabalho realizado?</div><div class="fv" style="margin-top:4px;white-space:pre-wrap">' + (p.avaliacao || '—') + '</div></div>' +
+'<div><div class="fl">Você foi bem atendido(a) pelo apoio?</div><div class="fv" style="margin-top:4px">' + (p.bemAtendido || '—') + '</div></div>' +
+'</div></div>' +
+((p.sugestoes || p.observacoes) ?
+'<div class="section"><div class="stitle">Sugestões e Observações</div><div class="sbody">' +
+(p.sugestoes ? '<div style="margin-bottom:12px"><div class="fl">Sugestões</div><div class="fv" style="white-space:pre-wrap">' + p.sugestoes + '</div></div>' : '') +
+(p.observacoes ? '<div><div class="fl">Observações</div><div class="fv" style="white-space:pre-wrap">' + p.observacoes + '</div></div>' : '') +
+'</div></div>' : '') +
+'<div class="footer">NutriSaúde · Avaliação de Visita – Apoio</div>' +
+'</body></html>';
+
+const win = window.open('', '_blank');
+if (win) { win.document.write(html); win.document.close(); }
+else { alert('Permita pop-ups para visualizar o PDF.'); }
+}
 </script>
 </body>
-</html>
+  </html>
