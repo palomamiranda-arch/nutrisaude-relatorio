@@ -410,16 +410,11 @@ const preencherDatalist = (id, itens) => {
   });
 };
 
-async function carregarListas() {
-  try {
-    const resp = await fetch(APPS_SCRIPT_URL);
-    const data = await resp.json();
-    preencherDatalist('dl-unidades', data.unidades || []);
-    preencherDatalist('dl-apoios', data.apoios || []);
-    preencherDatalist('dl-supervisores', data.supervisores || []);
-  } catch(e) {
-    console.warn('Não foi possível carregar as listas:', e);
-  }
+function carregarListas() {
+  var UNIDADES = ["ASB Aguas Sta Barbara","ASB CAMPOS","ASB Perus","ASB SAO LOURENCO","Alles","BRESCO","BTG 1","BTG VIII","Bbosch","Biatex","Biomecanica","CHS","Cainco","Cetro","Clinica Campo Grande","DONGWON","Dori Filial","Dori Matriz","Dori Rolandia","EBARA","EBARA THEBE","Flash Cover","HOSPITAL VERSANIA","HS Telecom","Haribo","Hosp Unimed Sao Carlos","Hosp Unimed Sao Carlos 2","Hosp. Bene","Hospital Araraquara","Hospital Unimed Limeira","Hospital Unimed Ribeirao","Hospital Unimed Rio Verde","Hwashin","INNOVAPACK","Ikatec","Injex","Jazam","Jornal Cruzeiro do Sul","KIMBERLIT","Kimetais","LOYDER","Laponia","Latam","METALTORK","METAX SP","MIRASSOL GUARULHOS","MIRASSOL JUNDIAI","Marilan","Maringa","Marvi","Maternidade Campinas","Matriz","Mectrol","Merieux Ambiental","Merieux Laboratorios","Metax Campinas","Metax Ribeirao","Minalba Belem","NGB ARACAJU","NGB Araucaria","NGB Bauru","NGB Belem","NGB CANOAS I","NGB CANOAS II","NGB IPOJUCA","NGB ITAJAI","NGB JUAZEIRO","NGB MACAE I","NGB MACAE II","NGB MAUA I","NGB MAUA II","NGB PAULINIA","NGB SAO FRANCISCO","NGB SAO LUIS","NGB SEnador Canedo","NIPRO","Noroeste","PEQUENO MUNDO","PREFERIDA","Plastrela","Polimaquinas","RECKITT","Refrix","Reval","SH","Sasazaki","Spiltag","Stalo","Tiliform","Tudor","Unimed Bauru","Unimed Campo Grande","VANNUCCI","VAXXINOVA"];
+  var SUPERVISORES = ["Alecsandra Lima","Erika Sanches","Jennifer Paixao","Juliane Cavalcanti","Mariana Lima","Natalia Pereira","Otilia Vilas Boas","Priscila Oliveira","Victor Cruz"];
+  preencherDatalist('dl-unidades', UNIDADES);
+  preencherDatalist('dl-supervisores', SUPERVISORES);
 }
 carregarListas();
 
