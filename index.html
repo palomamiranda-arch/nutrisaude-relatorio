@@ -277,7 +277,7 @@ function renderizarFotoQuestao(n) {
     const f = fotosQuestoes[n-1];
     container.innerHTML = '<div class="fotoq-thumb"><img src="data:' + f.tipo + ';base64,' + f.base64 + '" alt="Foto Q' + n + '"><button type="button" class="fotoq-rm" onclick="removerFotoQuestao(' + n + ')">×</button></div>';
   } else {
-    container.innerHTML = '<label class="fotoq-btn" title="Adicionar foto da questão ' + n + '"><input type="file" accept="image/*" capture="environment" style="display:none" onchange="selecionarFotoQuestao(' + n + ', this.files[0]); this.value=\'\';">📷</label>';
+    container.innerHTML = '<label class="fotoq-btn" title="Adicionar foto da questão ' + n + '"><input type="file" accept="image/*" capture="environment" style="display:none" onchange="selecionarFotoQuestao(' + n + ', this.files[0]); this.value=\'\';"'>📷</label>';
   }
 }
 
@@ -531,9 +531,9 @@ for (let i = 0; i <= 10; i++) {
   notaBtnsContainer.appendChild(btn);
 }
 
-// ══════════════════════════════════════════════════
+// ==================================================
 // GERAÇÃO DE PDF CLIENT-SIDE
-// ══════════════════════════════════════════════════
+// ==================================================
 
 function buildRelatorioHTML(payload) {
   const VERDE = '#2e7d32';
@@ -629,19 +629,13 @@ function buildRelatorioHTML(payload) {
   return '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
     '<style>body{font-family:Arial,sans-serif;margin:0;padding:24px;color:#222;}table{border-collapse:collapse;width:100%;}</style>' +
     '</head><body>' +
-
-    // Cabeçalho
     '<div style="text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid ' + VERDE + '">' +
     '<h1 style="color:' + VERDE + ';font-size:30px;font-weight:900;margin:0 0 4px">NutriSaúde</h1>' +
     '<h2 style="color:' + VERDE + ';font-size:15px;font-weight:700;margin:0 0 4px;letter-spacing:.5px">RELATÓRIO DE VISITA – APOIO</h2>' +
     '<p style="font-size:12px;color:#666;font-style:italic;margin:0">' + (payload.data_inicio_br || '') + '</p></div>' +
-
-    // Informações
     '<div style="background:' + VERDE + ';padding:10px 16px;border-radius:4px;margin-bottom:4px">' +
     '<span style="color:white;font-weight:700;font-style:italic;font-size:13px;letter-spacing:.3px">INFORMAÇÕES DA VISITA</span></div>' +
     '<table style="margin-bottom:24px"><tbody>' + infoHTML + '</tbody></table>' +
-
-    // Checklist
     '<div style="background:' + VERDE + ';padding:10px 16px;border-radius:4px;margin-bottom:4px">' +
     '<span style="color:white;font-weight:700;font-style:italic;font-size:13px;letter-spacing:.3px">CHECKLIST DE INSPEÇÃO</span></div>' +
     '<table style="margin-bottom:8px"><thead><tr style="background:' + VERDE + '">' +
@@ -650,13 +644,7 @@ function buildRelatorioHTML(payload) {
     '<th style="padding:9px 10px;color:white;font-style:italic;font-weight:700;font-size:12px;border:1px solid #1b5e20;width:80px;text-align:center">Resposta</th>' +
     '<th style="padding:9px 10px;color:white;font-style:italic;font-weight:700;font-size:12px;border:1px solid #1b5e20;text-align:left">Observação</th>' +
     '</tr></thead><tbody>' + questoesHTML + '</tbody></table>' +
-
-    notaHTML +
-    fotosQHTML +
-    relHTML +
-    fotosHTML +
-
-    // Rodapé
+    notaHTML + fotosQHTML + relHTML + fotosHTML +
     '<p style="text-align:center;font-size:10px;color:#999;font-style:italic;margin-top:40px;padding-top:12px;border-top:1px solid #eee">' +
     'Relatório gerado em: ' + dateStr + ' | Sistema NutriSaúde</p>' +
     '</body></html>';
@@ -665,19 +653,40 @@ function buildRelatorioHTML(payload) {
 async function gerarPDFBase64(payload) {
   const htmlContent = buildRelatorioHTML(payload);
 
+  // Criar wrapper visível mas transparente — html2canvas falha com elementos fora da viewport
   const wrapper = document.createElement('div');
   wrapper.innerHTML = htmlContent;
-  wrapper.style.cssText = 'position:absolute;left:-9999px;top:0;width:794px;background:#fff';
+  wrapper.style.cssText = [
+    'position:fixed',
+    'top:0',
+    'left:0',
+    'width:794px',
+    'background:#fff',
+    'z-index:99999',
+    'opacity:0.01',
+    'pointer-events:none',
+    'overflow:visible'
+  ].join(';');
   document.body.appendChild(wrapper);
+
+  await new Promise(r => setTimeout(r, 600));
 
   try {
     const opt = {
-      margin: [10, 10, 10, 10],
+      margin: [8, 8, 8, 8],
       filename: 'relatorio.pdf',
-      image: { type: 'jpeg', quality: 0.90 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, allowTaint: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      image: { type: 'jpeg', quality: 0.82 },
+      html2canvas: {
+        scale: 1.5,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        width: 794,
+        windowWidth: 794,
+        scrollX: 0,
+        scrollY: 0
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
     const pdfBlob = await html2pdf().set(opt).from(wrapper).outputPdf('blob');
@@ -693,9 +702,9 @@ async function gerarPDFBase64(payload) {
   }
 }
 
-// ══════════════════════════════════════════════════
+// ==================================================
 // ENVIO
-// ══════════════════════════════════════════════════
+// ==================================================
 
 document.getElementById('visitaForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -742,12 +751,10 @@ document.getElementById('visitaForm').addEventListener('submit', async function(
   };
 
   try {
-    // Gerar PDF client-side
     const pdfBase64 = await gerarPDFBase64(payload);
 
     btn.textContent = '⏳ Enviando…';
 
-    // Montar payload para o servidor (sem as fotos brutas — elas já estão no PDF)
     const serverPayload = {
       tipo: 'apoios',
       unidade: payload.unidade,
