@@ -154,7 +154,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047
   <div class="form-body">
     <p class="required-note">* Campos obrigatórios</p>
 
-    <form id="visitaForm">
+    <form id="visitaForm" novalidate>
 
       <!-- IDENTIFICAÇÃO -->
       <div class="section">
@@ -163,7 +163,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047
         <div class="grid-1">
           <div class="field">
             <label>Unidade *</label>
-            <input type="text" id="f_unidade" list="dl-unidades" placeholder="Digite ou selecione a unidade" required autocomplete="off">
+            <input type="text" id="f_unidade" list="dl-unidades" placeholder="Digite ou selecione a unidade" autocomplete="off">
           </div>
         </div>
         <datalist id="dl-unidades"></datalist>
@@ -172,12 +172,12 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047
         <div class="grid-3" style="margin-top:12px">
           <div class="field">
             <label>Data início *</label>
-            <input type="date" id="f_data_inicio" required>
+            <input type="date" id="f_data_inicio">
           </div>
           <div class="date-sep">até</div>
           <div class="field">
             <label>Data fim *</label>
-            <input type="date" id="f_data_fim" required>
+            <input type="date" id="f_data_fim">
           </div>
         </div>
 
@@ -186,7 +186,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047
           <label>Turno *</label>
           <div class="turno-group">
             <label class="turno-label">
-              <input type="radio" name="turno" value="Almoço" required>
+              <input type="radio" name="turno" value="Almoço">
               <span class="turno-emoji">☀️</span> Almoço
             </label>
             <label class="turno-label">
@@ -203,7 +203,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047
         <div class="grid-2" style="margin-top:12px">
           <div class="field">
             <label>Motivo da visita *</label>
-            <input type="text" id="f_motivo" placeholder="Ex: Visita de rotina" required>
+            <input type="text" id="f_motivo" placeholder="Ex: Visita de rotina">
           </div>
           <div class="field">
             <label>Tipo de visita</label>
@@ -217,7 +217,7 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: #43a047
         <div class="grid-2" style="margin-top:12px">
           <div class="field">
             <label>Apoio *</label>
-            <input type="text" id="f_apoio" list="dl-apoios" placeholder="Nome do apoio" required autocomplete="off">
+            <input type="text" id="f_apoio" list="dl-apoios" placeholder="Nome do apoio" autocomplete="off">
           </div>
           <datalist id="dl-apoios"></datalist>
           <div class="field">
@@ -713,12 +713,34 @@ document.getElementById('visitaForm').addEventListener('submit', async function(
 
   const relatorio = document.getElementById('relatorioText').value.trim();
 
-  if (!unidade || !apoio) {
-    alert('Preencha os campos obrigatórios: Unidade e Apoio.');
+  if (!unidade) {
+    alert('Preencha o campo obrigatório: Unidade.');
+    document.getElementById('f_unidade').focus();
+    return;
+  }
+  if (!apoio) {
+    alert('Preencha o campo obrigatório: Apoio.');
+    document.getElementById('f_apoio').focus();
+    return;
+  }
+  if (!dataInicio) {
+    alert('Preencha a data de início da visita.');
+    document.getElementById('f_data_inicio').focus();
+    return;
+  }
+  if (!dataFim) {
+    alert('Preencha a data de fim da visita.');
+    document.getElementById('f_data_fim').focus();
+    return;
+  }
+  if (!motivo) {
+    alert('Preencha o motivo da visita.');
+    document.getElementById('f_motivo').focus();
     return;
   }
   if (!turno) {
     alert('Selecione o turno da visita (Almoço, Jantar ou Ceia).');
+    document.querySelector('input[name="turno"]').scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
   if (notaSelecionada === null) {
