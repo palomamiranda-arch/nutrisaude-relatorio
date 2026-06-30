@@ -481,11 +481,6 @@
 </div>
 
 <script>
-  // ── CONFIG ──────────────────────────────────────────────────────────────
-  // Substitua pela URL do seu Apps Script Web App (backend)
-  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwJWM-5lMuHjxDqjS3K6uTbXLeCaVolTeZVuLVbylDu3NVxBLg4JwUdt14GvXzUsIjU/exec';
-  // ────────────────────────────────────────────────────────────────────────
-
   const UNIDADES = [
     'Alles','Ambiental','ASB Águas Sta Barbara','ASB Campos','ASB Perus',
     'Bbosch','Biatex','Bresco','BTG 1','BTG VIII',
@@ -516,9 +511,11 @@
   ].sort();
 
   const params = new URLSearchParams(window.location.search);
-  const paramUnidade = params.get('unidade') || '';
-  const paramApoio   = params.get('apoio')   || '';
-  const dataParam    = params.get('data')    || '';
+  const paramUnidade   = params.get('unidade')   || '';
+  const paramApoio     = params.get('apoio')     || '';
+  const dataParam      = params.get('data')      || '';
+  const dataInicioParam = params.get('dataInicio') || dataParam;
+  const dataFimParam    = params.get('dataFim')    || dataParam;
 
   // Monta campo Unidade
   const fieldUnidade = document.getElementById('field-unidade');
@@ -537,10 +534,8 @@
   }
 
   // Datas
-  if (dataParam) {
-    document.getElementById('dataInicio').value = dataParam;
-    document.getElementById('dataFim').value = dataParam;
-  }
+  if (dataInicioParam) document.getElementById('dataInicio').value = dataInicioParam;
+  if (dataFimParam)    document.getElementById('dataFim').value = dataFimParam;
 
   document.getElementById('dataInicio').addEventListener('change', function() {
     const fim = document.getElementById('dataFim');
@@ -617,18 +612,11 @@
       observacoes: document.getElementById('observacoes').value.trim(),
     };
 
+    const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwJWM-5IMuHjxDqjS3K6uTbXLeCaVolTeZVuLVbylDu3NVxBLg4JwUdt14GvXzUsIjU/exec';
+
     try {
-      // ── Envio via FormSubmit (email direto, sem restrição de organização) ──
-      const fd = new FormData();
-      fd.append('_subject', 'Nova Avaliação – ' + payload.apoio + ' / ' + payload.unidade);
-      fd.append('_template', 'table');
-      fd.append('_captcha', 'false');
-      fd.append('_replyto', 'noreply@nutrisaude.com.br');
-      Object.entries(payload).forEach(([k, v]) => fd.append(k, v || '-'));
-      await fetch('https://formsubmit.co/paloma.miranda@nutrisaude.com.br', {
-        method: 'POST',
-        body: fd
-      });
+      const url = BACKEND_URL + '?dados=' + encodeURIComponent(JSON.stringify(payload));
+      await fetch(url, { mode: 'no-cors' });
 
       document.getElementById('formWrapper').style.display = 'none';
       document.getElementById('successScreen').classList.add('visible');
