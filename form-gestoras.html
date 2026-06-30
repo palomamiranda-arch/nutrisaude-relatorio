@@ -618,9 +618,17 @@
     };
 
     try {
-      // Envia via GET com parâmetro (contorna redirect 302 do Apps Script que converte POST→GET)
-      const url = BACKEND_URL + '?dados=' + encodeURIComponent(JSON.stringify(payload));
-      await fetch(url, { mode: 'no-cors' });
+      // ── Envio via FormSubmit (email direto, sem restrição de organização) ──
+      const fd = new FormData();
+      fd.append('_subject', 'Nova Avaliação – ' + payload.apoio + ' / ' + payload.unidade);
+      fd.append('_template', 'table');
+      fd.append('_captcha', 'false');
+      fd.append('_replyto', 'noreply@nutrisaude.com.br');
+      Object.entries(payload).forEach(([k, v]) => fd.append(k, v || '-'));
+      await fetch('https://formsubmit.co/paloma.miranda@nutrisaude.com.br', {
+        method: 'POST',
+        body: fd
+      });
 
       document.getElementById('formWrapper').style.display = 'none';
       document.getElementById('successScreen').classList.add('visible');
